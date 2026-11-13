@@ -1,25 +1,540 @@
 <!DOCTYPE html>
-<html lang="zh"><head>
+<html lang="zh">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<meta http-equiv="refresh" content="60">
-<title>爆款雷达 · 还在加载</title>
+<title>Real Estate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
-  body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
-       background:#0a0d13;color:#e8e8ea;text-align:center;padding:24px;
-       font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
-  .spin{width:34px;height:34px;margin:0 auto 26px;border:3px solid #2a2f3a;
-        border-top-color:#ff785a;border-radius:50%;animation:s 1s linear infinite}
-  @keyframes s{to{transform:rotate(360deg)}}
-  h1{font-size:23px;margin:0 0 14px;font-weight:600}
-  p{margin:8px 0;color:#9a9aa2;font-size:15px;line-height:1.75}
-  .hint{margin-top:30px;font-size:13.5px;color:#6e6e78}
-  @media(prefers-reduced-motion:reduce){.spin{animation:none}}
-</style></head><body><div>
-  <div class="spin"></div>
-  <h1>你的页面还在加载中,请稍等</h1>
-  <p>第一次大约需要 20-60 分钟。</p>
-  <p>这一页会自己刷新,你可以先去忙别的。</p>
-  <p class="hint">等很久都没变?回到安装 SOP 第 7 步,<br>到仓库的 Actions 看 Sync Content 有没有跑完。</p>
-</div></body></html>
+  :root {
+    --bg: #0a0d13;
+    --card: #11151d;
+    --card-hi: #151a24;
+    --border: #1d2430;
+    --border-hi: #2c3546;
+    --text: #e8ecf3;
+    --muted: #8a94a6;
+    --faint: #5b6577;
+    --accent: #5ea1ff;
+    --green: #3fd68f;
+    --orange: #f0a33f;
+    --pink: #ff6b9d;
+    --red: #ff5c5c;
+    --fire1: #ff8a3d;
+    --fire2: #ff4d6d;
+    --font: 'Inter', -apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    --disp: 'Space Grotesk', 'Inter', -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scrollbar-color: #232c3b var(--bg); }
+  body { background: var(--bg); color: var(--text); font-family: var(--font);
+    -webkit-font-smoothing: antialiased; }
+  ::selection { background: rgba(94,161,255,.3); }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: #232c3b; border-radius: 8px; }
+  ::-webkit-scrollbar-thumb:hover { background: #2c3546; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+
+  .ic { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2;
+    stroke-linecap: round; stroke-linejoin: round; fill: none; flex: none; }
+
+  header { position: sticky; top: 0; z-index: 50; background: rgba(10,13,19,.86);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border); padding: 13px 20px 12px; }
+  .hrow { display: flex; flex-wrap: wrap; gap: 9px; align-items: center; max-width: 1440px; margin: 0 auto; }
+  .brand { display: flex; align-items: center; gap: 10px; margin-right: auto; }
+  .mark { width: 31px; height: 31px; border-radius: 9px; display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--fire1), var(--fire2));
+    box-shadow: 0 4px 16px rgba(255,92,80,.35); }
+  .mark .ic { width: 17px; height: 17px; color: #fff; }
+  h1 { font-family: var(--disp); font-size: 16.5px; font-weight: 700; letter-spacing: .2px; white-space: nowrap; line-height: 1.15; }
+  h1 small { display: block; color: var(--faint); font-family: var(--font); font-weight: 400;
+    font-size: 10.5px; letter-spacing: 0; }
+
+  .search { position: relative; }
+  .search > .ic { position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
+    color: var(--faint); width: 13.5px; pointer-events: none; }
+  input#fSearch { background: var(--card); color: var(--text); border: 1px solid var(--border);
+    border-radius: 10px; padding: 8px 12px 8px 32px; font-size: 13px; font-family: var(--font);
+    width: 200px; transition: border-color .18s, background .18s; }
+  input#fSearch:hover { border-color: var(--border-hi); }
+  input#fSearch:focus { border-color: var(--accent); outline: none; }
+  input#fSearch::placeholder { color: var(--faint); }
+
+  select, .btn { background: var(--card); color: var(--text); border: 1px solid var(--border);
+    border-radius: 10px; padding: 8px 11px; font-size: 13px; font-family: var(--font);
+    cursor: pointer; transition: border-color .18s, background .18s, color .18s;
+    display: inline-flex; align-items: center; gap: 6px; }
+  select:hover, .btn:hover { border-color: var(--border-hi); background: var(--card-hi); }
+  .btn:active { transform: scale(.97); }
+  .btn.on { border-color: var(--accent); color: var(--accent); background: rgba(94,161,255,.08); }
+
+  .tabs { display: flex; gap: 7px; flex-wrap: wrap; max-width: 1440px; margin: 12px auto 0; }
+  .tab { display: inline-flex; align-items: center; gap: 7px; background: var(--card);
+    border: 1px solid var(--border); border-radius: 999px; padding: 6.5px 14px;
+    font-size: 13px; color: var(--muted); cursor: pointer; user-select: none;
+    transition: border-color .18s, background .18s, color .18s, transform .18s; }
+  .tab:hover { border-color: var(--border-hi); color: var(--text); }
+  .tab .cnt { font-family: var(--disp); font-weight: 600; font-size: 11px;
+    background: rgba(255,255,255,.06); padding: 1.5px 7.5px; border-radius: 99px;
+    font-variant-numeric: tabular-nums; }
+  .tab.on { color: var(--text);
+    background: linear-gradient(135deg, rgba(255,138,61,.15), rgba(255,77,109,.15));
+    border-color: rgba(255,120,90,.45); }
+  .tab.on .cnt { background: rgba(255,120,90,.25); }
+  body.dragging .tab.droppable { border-style: dashed; border-color: var(--accent); }
+  .tab.over { background: rgba(94,161,255,.22); color: var(--text); transform: scale(1.07); }
+
+  .chips { display: flex; gap: 6px; flex-wrap: wrap; max-width: 1440px; margin: 9px auto 0; align-items: center; }
+  .chips .lbl { font-size: 12px; color: var(--faint); margin-right: 2px; }
+  .chip2 { display: inline-flex; align-items: center; gap: 5.5px; background: var(--card);
+    border: 1px solid var(--border); border-radius: 999px; padding: 4.5px 12px;
+    font-size: 12px; color: var(--muted); cursor: pointer; user-select: none;
+    transition: border-color .18s, color .18s, background .18s;
+    font-variant-numeric: tabular-nums; }
+  .chip2 .ic { width: 12.5px; height: 12.5px; }
+  .chip2:hover { border-color: var(--border-hi); color: var(--text); }
+  .chip2.on { border-color: rgba(240,163,63,.6); color: var(--orange); background: rgba(240,163,63,.08); }
+
+  main { max-width: 1440px; margin: 22px auto; padding: 0 20px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(305px, 1fr)); gap: 18px; }
+
+  .card { position: relative; background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; overflow: hidden; display: flex; flex-direction: column;
+    transition: transform .22s cubic-bezier(.2,.7,.3,1), border-color .22s, box-shadow .22s;
+    animation: fadeUp .45s cubic-bezier(.2,.7,.3,1) both; }
+  .card:hover { transform: translateY(-3px); border-color: var(--border-hi);
+    box-shadow: 0 12px 32px rgba(0,0,0,.45); }
+  .card.outlier::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--fire1), var(--fire2)); z-index: 2; }
+  .card[draggable] { cursor: grab; }
+  .card.lifting { opacity: .45; }
+  .card.saved { border-color: var(--green); }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+  .embed { position: relative; width: 100%; aspect-ratio: 4/5; background: #080b10; }
+  .embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .embed .ph { position: absolute; inset: 0; display: grid; place-items: center;
+    background: linear-gradient(110deg, #0b0e15 8%, #121826 18%, #0b0e15 33%);
+    background-size: 200% 100%; animation: shimmer 1.5s linear infinite; }
+  .embed .ph .ic { width: 30px; height: 30px; color: #2a3342; stroke-width: 1.6; }
+  @keyframes shimmer { to { background-position-x: -200%; } }
+
+  .meta { padding: 13px 15px 14px; display: flex; flex-direction: column; gap: 9px; }
+  .row1 { display: flex; align-items: center; gap: 7px; font-size: 13px; flex-wrap: wrap; }
+  .handle { color: #3a4456; cursor: grab; display: inline-flex; }
+  .handle .ic { width: 13px; height: 13px; }
+  .who { font-weight: 600; color: var(--accent); text-decoration: none; }
+  .who:hover { text-decoration: underline; }
+  .badge { display: inline-flex; align-items: center; gap: 4px; font-size: 10.5px; font-weight: 500;
+    padding: 2.5px 8px; border-radius: 999px; border: 1px solid var(--border); color: var(--muted); }
+  .badge .ic { width: 10.5px; height: 10.5px; }
+  .badge.bnew { color: var(--pink); border-color: rgba(255,107,157,.45); background: rgba(255,107,157,.07); }
+  .badge.bhorse { color: var(--orange); border-color: rgba(240,163,63,.45); background: rgba(240,163,63,.07); }
+  .badge.bbait { color: var(--accent); border-color: rgba(94,161,255,.4); background: rgba(94,161,255,.07); }
+  .date { margin-left: auto; color: var(--faint); font-size: 11px; font-variant-numeric: tabular-nums; }
+
+  .nums { display: flex; gap: 6px; flex-wrap: wrap; }
+  .num { display: inline-flex; align-items: center; gap: 5px; background: #0c0f16;
+    border: 1px solid var(--border); border-radius: 9px; padding: 5px 9px;
+    font-size: 11px; color: var(--muted); }
+  .num .ic { width: 11.5px; height: 11.5px; }
+  .num b { font-family: var(--disp); color: var(--text); font-size: 12.5px; font-weight: 600;
+    font-variant-numeric: tabular-nums; }
+  .num.hot { border-color: rgba(255,122,77,.35); }
+  .num.hot .ic, .num.hot b { color: #ff7a4d; }
+  .num.x { border-color: rgba(240,163,63,.35); }
+  .num.x .ic, .num.x b { color: var(--orange); }
+  .num.er .ic, .num.er b { color: var(--green); }
+
+  .cap { color: var(--muted); font-size: 12.5px; line-height: 1.55; display: -webkit-box;
+    -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; cursor: pointer; }
+  .cap.open { -webkit-line-clamp: unset; }
+  .cap b { color: var(--text); font-weight: 600; }
+  .ai { border-left: 2px solid var(--orange); background: rgba(240,163,63,.06);
+    padding: 8px 11px; border-radius: 0 10px 10px 0; font-size: 12px; line-height: 1.65;
+    color: var(--muted); }
+  .ai b { color: var(--orange); font-weight: 600; }
+  .mine { border-left: 2px solid var(--green); background: rgba(63,214,143,.06);
+    padding: 8px 11px; border-radius: 0 10px 10px 0; font-size: 12px; line-height: 1.65;
+    color: var(--muted); cursor: pointer; display: -webkit-box; -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical; overflow: hidden; white-space: pre-wrap; }
+  .mine.open { -webkit-line-clamp: unset; }
+  .mine b { color: var(--green); font-weight: 600; }
+
+  .srow { display: flex; align-items: center; gap: 7px; }
+  .srow label { font-size: 12px; color: var(--faint); }
+  .status { flex: 1; padding: 6px 9px; font-size: 12.5px; }
+  .status.s未处理 { color: var(--muted); }
+  .status.s拍摄中 { color: var(--orange); border-color: rgba(240,163,63,.5); }
+  .status.s已处理 { color: var(--green); border-color: rgba(63,214,143,.5); }
+  .status.s跳过 { color: var(--red); border-color: rgba(255,92,92,.5); }
+  .abtn { display: inline-flex; align-items: center; gap: 5px; background: #0c0f16;
+    color: var(--muted); border: 1px solid var(--border); border-radius: 9px;
+    padding: 6px 10px; font-size: 11.5px; font-family: var(--font); cursor: pointer;
+    text-decoration: none; transition: color .18s, border-color .18s, transform .1s; }
+  .abtn .ic { width: 12px; height: 12px; }
+  .abtn:hover { color: var(--accent); border-color: rgba(94,161,255,.5); }
+  .abtn:active { transform: scale(.95); }
+
+  .more { text-align: center; margin: 28px 0 44px; }
+  .more button { background: var(--card); color: var(--accent); border: 1px solid var(--border);
+    border-radius: 12px; padding: 11px 30px; font-size: 14px; font-family: var(--font);
+    cursor: pointer; transition: border-color .18s, background .18s; }
+  .more button:hover { border-color: var(--border-hi); background: var(--card-hi); }
+
+  .empty { color: var(--faint); text-align: center; padding: 70px 0; display: flex;
+    flex-direction: column; align-items: center; gap: 12px; font-size: 14px; }
+  .empty .ic { width: 34px; height: 34px; stroke-width: 1.5; color: #2c3546; }
+
+  footer { color: var(--faint); font-size: 11px; text-align: center; padding: 22px; }
+
+  #toast { position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%) translateY(8px);
+    background: var(--card-hi); border: 1px solid var(--border-hi); border-radius: 11px;
+    padding: 11px 20px; font-size: 13px; display: none; z-index: 99; opacity: 0;
+    box-shadow: 0 12px 32px rgba(0,0,0,.5); transition: opacity .2s, transform .2s; }
+  #toast.show { display: block; opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-flame" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"/></symbol>
+  <symbol id="i-msg" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="i-trend" viewBox="0 0 24 24"><path d="M22 7l-8.5 8.5-5-5L2 17"/><path d="M16 7h6v6"/></symbol>
+  <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.6 7-6.2-3.7-6.2 3.7 1.6-7L2 9.5l7.1-.6z"/></symbol>
+  <symbol id="i-magnet" viewBox="0 0 24 24"><path d="m6 15-4-4 6.75-6.77a7.79 7.79 0 0 1 11 11L13 22l-4-4 6.39-6.36a2.14 2.14 0 0 0-3-3L6 15"/><path d="m5 8 4 4"/><path d="m12 15 4 4"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+  <symbol id="i-clip" viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 12h6"/><path d="M9 16h6"/></symbol>
+  <symbol id="i-ext" viewBox="0 0 24 24"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
+  <symbol id="i-key" viewBox="0 0 24 24"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></symbol>
+  <symbol id="i-video" viewBox="0 0 24 24"><path d="m10 8 6 4-6 4Z"/><rect x="2" y="4" width="20" height="16" rx="3"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></symbol>
+  <symbol id="i-grip" viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></symbol>
+  <symbol id="i-pct" viewBox="0 0 24 24"><path d="M19 5 5 19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></symbol>
+  <symbol id="i-mic" viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/></symbol>
+</svg>
+<header>
+  <div class="hrow">
+    <div class="brand">
+      <div class="mark"><svg class="ic"><use href="#i-flame"/></svg></div>
+      <h1>Real Estate<small id="updated"></small></h1>
+    </div>
+    <div class="search"><svg class="ic"><use href="#i-search"/></svg>
+      <input id="fSearch" placeholder="搜文案 / hashtag / 账号"></div>
+    <select id="fTracker"><option value="">全部 Tracker</option></select>
+    <select id="fComp"><option value="">全部 Competitor</option></select>
+    <select id="fSort">
+      <option value="x">按 爆款倍数 (vs 自家平均)</option>
+      <option value="score">按 Viral Score</option>
+      <option value="er">按 Engagement Rate</option>
+      <option value="comments">按 Comments</option>
+      <option value="likes">按 Likes</option>
+      <option value="date">按 最新日期</option>
+    </select>
+    <button class="btn" id="fVideo"><svg class="ic"><use href="#i-video"/></svg>只看视频</button>
+
+    <a class="btn" href="team.html" target="_top" title="工作台"><svg class="ic"><use href="#i-users"/></svg>工作台</a>
+  </div>
+  <div class="tabs" id="tabs"></div>
+  <div class="chips" id="presets"></div>
+  <div class="chips" id="trends"></div>
+</header>
+<main>
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty" style="display:none"><svg class="ic"><use href="#i-search"/></svg>没有符合条件的帖子</div>
+  <div class="more" id="moreWrap" style="display:none"><button id="moreBtn">载入更多</button></div>
+</main>
+<footer>数据来源 Supabase · 每周自动更新 · 状态更改即时同步全团队 · 视频由 Instagram 官方 embed 播放</footer>
+<div id="toast"></div>
+<script id="data" type="application/json">[{"id": "DeOq2GPDkSs", "tracker": "Real Estate 竞对", "competitor": "chaletteku", "caption": "留言【AI做图】，我发你另外30个GPT做图隐藏指令！🤫\n\n#ai #chatgpt #prompt #gpt #ai做图 #chalette", "transcript": "在签起文件上傳一張你的產品照片如果你打Stretch 3D Viewboard你就可以不用花一分錢讓你的產品出現在大型廣告牌上面如果你打Stretch Meta Ads你的Social Media廣告圖就可以直接搞定如果你打Stretch Fat Lake你就可以不用塞到場景也可以做出攝影棚級別的廣告圖片如果你打Stretch UGC Shoot你就可以不用請網紅去拍這種實拍圖自己就可以做出 UGC 產品圖如果你打Stretch 360 View你就可以直接生成屬360度旋轉的這種展示圖如果你打Stretch Loading Product你就可以做出這種雙奶碰出來產品懸浮的這種效果如果你打Stretch Lifestyle Shoot你就可以輕輕鬆鬆把你的產品圖片變成這種 Pinterest 氛圍感的照片如果你在評論區打出AI 作圖我就把我另外30個的AI 作圖影長Prom直接發給你", "brk": "Hook类型: 痛点直击\n结构: 抛出免费AI指令痛点 → 逐一展示高阶效果 → 引导评论区留言获取\n为什么火: 直接解决买不起广告和请不起模特的高成本痛点，干货极多\n改编角度: 盘点5个免费房产AI制图Prompt，教买家或同行一键生成高级户型与装修图", "my": "新家钥匙已经拿到手了，／但旧的 HDB 还没卖掉。🏠\n\n很多人以为，／房子要赶快放上网，／价格要一直砍低，／才能在规定时间内卖掉。\n\n其实不是，／真正让人头痛的，／是后面的时间线和手续。\n\n第一，／处理 CPF 和时间线。／很多人不知道卖旧家能拿回多少现金，／其实只要先算清楚，／才不会买新家时资金卡住。／把账目算好，／后面的流程才会顺。\n\n第二，／应对买家的各种顾虑。／买家看房时会担心屋龄、装修或延长居住，／其实只要耐心解释，／帮他们把关好每一个细节，／买卖双方才能安心。\n\n第三，／兼顾新 BTO 的流程。／不只是卖旧家，／连新房子的时间和文件，／也要一起前前后后顾好，／才不会两头忙乱。\n\n以前很多屋主自己处理，／常常对 CPF 和 HDB 规定一头雾水，／搞得压力很大。\n\n现在只要找对人帮忙，／从卖房到新家流程都有人一步步把关，／整个过程就会安心很多。\n\n如果你也准备卖 HDB、换 BTO，／但对 CPF、时间线或延长居住一头雾水，／欢迎找我聊聊。\n\n房子卖掉只是结果，／把整个过程安排好，才是重点🏠", "tags": "ai, chatgpt, prompt, gpt, ai做图, chalette", "bait": true, "type": "Video", "likes": 6012, "comments": 4451, "er": 13.09, "followers": 79947, "date": "2026-10-08", "url": "https://www.instagram.com/p/DeOq2GPDkSs/", "video": true, "ratio": 0, "score": 24.22, "status": "未处理", "x": 26.6}, {"id": "DeJvAGJARXD", "tracker": "Real Estate 竞对", "competitor": "chaletteku", "caption": "成年人自取欺辱的10件事，你中了几个？\n\n#个人成长 #人间清醒 #认知觉醒 #女性成长 #自我成长 #chalette", "transcript": "Mic!micablyanania Hey", "brk": "Hook类型: 痛点直击\n结构: 罗列现象 → 触及痛点 → 引发共鸣\n为什么火: 直击成年人心理软肋，引发强烈的自我审视与社交分享欲。\n改编角度: 改编为“买房人自取欺辱的10件事”，直击海外华人看房买房的认知误区。", "my": "拿到新 HDB 钥匙却开心不起来，其实是因为旧房还没卖掉。\n\n很多人以为，只要把房子放上网，就会有买家自动找上门来。\n\n其实这一单，真的不是放上网就会卖掉这么简单。\n\n第一，处理屋龄和装修顾虑。\n买家看房时会担心屋龄老旧、装修风格不合，或是未来需要重新翻新。\n你要提前帮买家把这些顾虑一一解答，顺着买家的思路去沟通。\n这样买家才会放心谈价钱，屋子才不会一直卡在市场上。\n\n第二，搞懂 CPF 和时间线。\n卖房换房的时候，CPF 退款和时间线衔接往往让人一头雾水。\n你需要提前把整个流程安排好，提醒什么时候呈交给建屋局。\n这样才不会因为时间线对不上，导致买卖过程手忙脚乱。\n\n第三，处理延长居住的需求。\n如果新家还没完全准备好，卖家就需要向建屋局申请延长居住。\n你要帮客户把延长居住的细节和时间都前后顾好。\n这样才能让整个交易顺利完成，不用担心搬家的时候没有地方住。\n\n以前很多屋主自己处理换房，常常被 HDB 的规定和各种文件搞得焦头烂额。\n用对方法把过程一步步安排好以后，不仅能顺利完成买卖，还能把 CPF 和时间线都顾得妥妥当当。\n\n如果你也准备卖 HDB、换 BTO，但对 CPF、时间线或延长居住一头雾水，欢迎找我聊聊。\n\n房子卖掉只是结果，把整个过程安排好，才是重点。", "tags": "个人成长, 人间清醒, 认知觉醒, 女性成长, 自我成长, chalette", "bait": false, "type": "Video", "likes": 5561, "comments": 7, "er": 6.96, "followers": 79947, "date": "2026-10-06", "url": "https://www.instagram.com/p/DeJvAGJARXD/", "video": true, "ratio": 0, "score": 6.98, "status": "未处理", "x": 7.7}, {"id": "DettaUMGfh_", "tracker": "Real Estate 竞对", "competitor": "raylashao", "caption": "到10月才发现Q1竟还拿了个第一名奖项🤩😆\n感谢客户\n感谢团队\n我会继续努力💪", "transcript": "", "brk": "", "my": "", "tags": "", "bait": false, "type": "Carousel", "likes": 23, "comments": 6, "er": 4.75, "followers": 610, "date": "2026-10-20", "url": "https://www.instagram.com/p/DettaUMGfh_/", "video": false, "ratio": 0, "score": 6.72, "status": "未处理", "x": 2.2}, {"id": "DeS23teDwZE", "tracker": "Real Estate 竞对", "competitor": "xiaoyangproperty", "caption": "百万中介的一天，居然不卖房？\n#vlog我的一天 #日常vlog #新加坡房屋经纪 #曼谷 #亲子日常 #新加坡生活", "transcript": "", "brk": "Hook类型: 身份共鸣\n结构: 悬念引入 → 日常反差展示 → 价值输出\n为什么火: 打破行业刻板印象，用真实Vlog建立亲切专业人设\n改编角度: 拍摄新加坡买房经纪人的一天，突出专业带看与带娃平衡的生活方式", "my": "拿到新 HDB 钥匙的你，是不是正盯着旧房直发愁？\n\n很多人以为，\n只要把卖房广告放上网，\n或者把屋龄、装修拍照发出去，\n就能顺利把房子卖掉。\n\n其实真的没那么简单。\n屋龄、CPF、延长居住、时间线，\n每一个环节都可能让人一头雾水。\n\n作为做了十多年新加坡 Property Agent，\n我带过超过 100+ 人顺利完成买卖。\n其实处理房屋买卖，\n最重要的是把这三个细节前前后后顾好。\n\n第一步，\n先把卖房后的资金账目算清楚。\n我们要知道卖房能拿回多少现金、CPF 退款是多少，\n才能把下一步换房的预算抓稳。\n\n第二步，\n是耐心处理买家的各种担忧。\n不管是装修状况、屋龄限制还是时间线，\n有问题的时候有人在，\n不懂的时候有人耐心解释，\n才能谈到真正适合房子的有缘人。\n\n第三步，\n连新家 BTO 的流程和时间也要一起把关。\n不管是转售组屋的法定完成程序，\n还是新家可能会延迟交钥匙的情况，\n都要提前把时间线安排好，\n才不会被 HDB 的规定压得喘不过气。\n\n【剪辑:这里放案例画面】\n就像我遇到的一位 70 多岁女屋主，\n拿到新 HDB 钥匙后旧房还没卖掉，\n被 6 个月内必须卖房的规定急得不行。\n我们不仅帮她申请延期，\n还一路把CPF、时间线和各种顾虑前前后后顾好，\n最后顺利完成了交易。\n\n以前自己换房的时候，\n总觉得只要房子卖掉就好，\n常常卡在时间线和各种繁琐的规定里。\n现在把整个过程安排好，\n不管是买卖组屋还是处理 HDB 的文件，\n都有人帮你把关，\n整个过程就会安心很多。\n\n如果你也准备卖 HDB、换 BTO，\n但对 CPF、时间线或延长居住一头雾水，\n欢迎找我聊聊，\n我们一起来看看你的房产规划。\n\n房子卖掉只是结果，\n把整个过程安排好，才是重点🏠", "tags": "vlog我的一天, 日常vlog, 新加坡房屋经纪, 曼谷, 亲子日常, 新加坡生活", "bait": false, "type": "Video", "likes": 90, "comments": 2, "er": 4.49, "followers": 2048, "date": "2026-10-10", "url": "https://www.instagram.com/p/DeS23teDwZE/", "video": true, "ratio": 0, "score": 4.69, "status": "未处理", "x": 2.3}, {"id": "DfbEBtTRszL", "tracker": "Real Estate 竞对", "competitor": "xiaoyangproperty", "caption": "平时很会讲话，这个时候就不行了！\n#新加坡房屋经纪 #新加坡房屋中介 #日常vlog #幕后 #绕口令 #太难了", "transcript": "沒有東西做嗎所以我們現在要試做這個繞口令我懂所以講得比較快可是我們四個都要試啊這個沒有背景所以我先試試看你會試試那個檔嗎對 我會試試看我試試看來看誰先完成四個房產經濟四個賣家等時四個買家出價OK35秒那就沒有很快耶怎麼快那就沒有很快耶四個房產經濟看14套房14套等時四個買家出價37秒你多少3535哇房產經濟看14套房14套房有4套私房4套私房吸引14個買家14個買家增強4套私房4個賣家開出14種房價14個買家提出40次一價4個經濟談了14次價格14次談價談出4種成交價14個買家搶4套私房4個賣家建設14種房價到底是14個買家搶4套私房還是4個賣家等14個買家出價14秒哇14秒來先打開一下來聽上去哈哈哈哇哇哇哇哇哇哇哇四個房產經濟看14套房14套房裡有4套私房哈哈哈我不讀了哈哈哈太難了哈哈哈我給你吧太強了四個房產經濟看14套房14套房裡有4套私房4套私房吸引14個14個我不可以啦很累耶太長了這個我們可改短短改這麼多來過如果你們覺得你們也可以在下面留言挑戰你們我們把這個subscribe拚在下面然後呢你們嘗試一下哈哈哈", "brk": "Hook类型: 痛点直击与趣味挑战\n结构: 抛出绕口令任务 → 团队接力挑战 → 频频吃瘪爆笑 → 号召粉丝留言\n为什么火: 用房产行业专业术语结合高难度绕口令，极具网感且反差感强\n改编角度: 结合买房/卖房专业痛点自制房产绕口令挑战，拉近客户距离并引发互动", "my": "新家钥匙已经拿到手，／但旧的 HDB 还没卖掉吗？\n\n很多人以为，／只要把屋子放上网，／买家就会自己找上门。\n\n其实转售组屋没那么简单，／从屋龄、装修到延长居住，／买家顾虑真的很多。\n\n第一步，／先算清楚卖房预算。／我们要看能拿回多少现金，／还有 CPF 退款细节。／这样买新 HDB 或 BTO 时心里才有底。\n\n第二步，／处理买家各种担忧。／遇到买家问时间线或装修问题时，／我们要有耐心帮他们解释。／把这些细节都顾好，／交易才不会卡住。\n\n第三步，／注意 HDB 呈交时间。／如果新家延迟交钥匙，／我们可以帮忙申请延期。／跟着这个节奏走，／整个过程就会顺利很多。\n\n【剪辑:这里放案例画面】\n之前帮一位 70 多岁的女屋主卖房，／她拿到新 HDB 钥匙后非常着急，／担心 6 个月内卖不出去。／我们帮她申请延期，／最后顺利把房子卖掉。\n\n以前自己处理转售组屋，／对 CPF 和时间线一头雾水，／常常不知道下一步该做什么。／现在有经验丰富的 agent 从头到尾把关，／连新 BTO 流程也一起顾好，／卖房其实可以很安心。\n\n如果你也准备卖 HDB、换 BTO，／但对时间线或 CPF 一头雾水，／欢迎找我聊聊。\n\n房子卖掉只是结果，／把整个过程安排好，才是重点。", "tags": "新加坡房屋经纪, 新加坡房屋中介, 日常vlog, 幕后, 绕口令, 太难了", "bait": false, "type": "Video", "likes": 31, "comments": 11, "er": 2.05, "followers": 2048, "date": "2026-11-07", "url": "https://www.instagram.com/p/DfbEBtTRszL/", "video": true, "ratio": 0, "score": 3.13, "status": "未处理", "x": 1.6}, {"id": "DfpQf-fmTAU", "tracker": "Real Estate 竞对", "competitor": "raylashao", "caption": "Such a fun and rewarding experience hosting today’s ERA Chinese UCS session!\n\nGreat to share insights on Singapore’s property market, reflect on 2026, and explore what lies ahead in 2027.\n\nOne project I’m particularly excited about is One Chuan Grove, a rare large-scale development in the mature Lorong Chuan neighborhood, combining two GLS land parcels, excellent MRT connectivity, and established lifestyle amenities.\n\nDefinitely one to watch in 2027!\n\nThank you to everyone who joined us today, and to the team for making this event a success💜\n\n#OneChuanGrove #ERARealEstate #SingaporeProperty #NewLaunch2027", "transcript": "", "brk": "Hook类型: 行业前瞻/干货分享\n结构: 主持活动 → 分享市场趋势 → 重点推荐新盘\n为什么火: 结合专业地产讲座与具体高潜力新盘预测，建立权威信任\n改编角度: 拍短视频盘点2027年新加坡重点新盘，结合讲座现场增强专业度", "my": "拿到新 BTO 钥匙那一刻，／你是不是一边开心，／一边又开始慌了。\n\n很多人以为，／只要新家钥匙拿到手，／旧的 HDB 随便放上网就能卖掉。\n\n其实真的不是，／转售组屋的买家一上来，／往往就会有一堆让人头疼的顾虑。\n\n第一步，先把 CPF 的账算清楚。\n卖完旧房之后，／退回 CPF 的钱到底有多少，／直接决定了你换房的现金预算。\n把这个数字算明白，／买家问的时候你才不会一头雾水。\n\n第二步，把时间线和延长居住安排好。\nHDB 转售交易里面，／最怕的就是新家还没好，／旧屋却要搬走。\n把延长居住和时间线／提前和买家沟通好，／才不会让自己天天被 deadlines 压着。\n\n第三步，连新 BTO 的流程也一起前前后后顾好。\n不只是把旧家卖掉，／新房子的文件和细节，／也要随时留意建屋局的规定。\n有不懂的时候，／随时有人能帮你耐心解释。\n\n拿下一位 70 多岁女屋主的转售组屋时，／她已经拿到新 HDB 钥匙，／但旧房还没卖掉，／被 6 个月内必须卖房的规定急得不行。\n【剪辑:这里放案例画面】\n我们一路帮她申请延期，／把各种顾虑一个个处理掉，／最后顺利完成了整个交易。\n\n以前自己看转售组屋流程时，／常常被各种规定卡住，／ CPF 和时间线弄得焦头烂额。\n用对方法把过程一步步把关好之后，／卖房换房其实也可以稳稳当当。\n\n如果你也准备卖 HDB、换 BTO，／但对 CPF、时间线或延长居住一头雾水，／欢迎找我聊聊。\n\n房子卖掉只是结果，／把整个过程安排好，才是重点。", "tags": "OneChuanGrove, ERARealEstate, SingaporeProperty, NewLaunch2027", "bait": false, "type": "Carousel", "likes": 19, "comments": 0, "er": 3.11, "followers": 610, "date": "2026-11-12", "url": "https://www.instagram.com/p/DfpQf-fmTAU/", "video": false, "ratio": 0, "score": 3.11, "status": "未处理", "x": 1.0}, {"id": "DelQYg-gYmi", "tracker": "Real Estate 竞对", "competitor": "xiaoyangproperty", "caption": "逼成员做他们不想做的事🤪\n#新加坡房屋经纪 #新加坡房产 #vlog", "transcript": "被罵了真的假的他怎么讲我购买了三个礼拜前你们现在才来打已经算了啦今天会是一个大突破是这必须的耶他在做我们哦我们现在啊我们现在就是一直以来Generate这些例子好像没有接下来的Appointment所以呢因为之前Appointment做不完嘿 没有啦开玩笑这次我们要证明给我们自己我们也是把电话可以conversateAppointment的我住中介两年哦我真的好怕他电话你说好怕对不对 我跟你讲没有Appointment 没有Appointment 没有没有list 没有什么现在list 摆在你面前你也要不要conversate三Appointment我来证明给你我现在要用战略套我们也不想你你会发现什么好棒啦第一次啦第一次啦你知道吗你知道吗Nickels Appointment那就早上10点下一个星期四我们现场见哦好不好321231Appointment set很棒啦两个Appointment secure哇 很好很好哇 再key了啦你觉得很棒吗你没有Unbell你没有Unbell哇哈哈哈哈NManage Set 1AppointmentYesVK23Poo老板呢 老板3啦对啦我不需要我一个人在上面我要的是你们陪我在一起我知道今天是你们大家的Best Year所以告诉你今年只是开始其实打电话没有这么可怕毕竟我们在运用我们的四部Maps框架分享给客户怎么样去选对方跑音师我觉得我们比较是属于Value Act给顾客所以既然我们是带给客户价值我们为什么要怕所以那次有接我们电话的人就赚到了没有接到的就too bad", "brk": "Hook类型: 痛点直击\n结构: 逼迫下属打电话 → 现场实战突破恐惧 → 成功预约并总结方法\n为什么火: 真实记录团队冷电突破全过程，充满戏剧张力与情绪共鸣\n改编角度: 拍摄团队新人首个Cold Call实录，突出新加坡买房客户真实反应", "my": "拿到新 HDB 钥匙却还要卖旧房，真的很怕被 6 个月时间线压着对不对。\n\n很多人以为，只要把转售组屋资料放上网，买家自然就会上门来谈。\n\n其实真正做起来，才会发现买家各种担忧接踵而来，CPF、延长居住跟装修细节全卡在一起。\n\n第一步，先帮客户把 CPF 退款和换房预算算清楚，心里有底才不会慌。\n\n因为很多买家对屋龄和时间线有一头雾水，我们需要提前把这些细节一条条解释清楚。\n\n第二步，遇到买家问各种问题时，一定要有耐心在旁边随时把关，帮他们把整个流程安排好。\n\n就像我之前帮一位七十多岁的女屋主，拿了新钥匙却旧房还没卖掉，我们马上帮她去申请延期。\n\n最后顺利卖出房子拿到钱，整个过程有人在旁边顾好，才不会一头雾水。\n\n以前自己面对复杂的 HDB 规定和转售流程，真的会担心 CPF 和时间线搞砸。\n\n现在只要把每个步骤和法律完成时间安排好，换房其实没有想象中那么可怕。\n\n如果你也准备卖 HDB 换 BTO，但对 CPF、时间线或延长居住一头雾水，欢迎找我聊聊。\n\n房子卖掉只是结果，把整个过程安排好，才是重点。", "tags": "新加坡房屋经纪, 新加坡房产, vlog", "bait": false, "type": "Video", "likes": 51, "comments": 3, "er": 2.64, "followers": 2048, "date": "2026-10-17", "url": "https://www.instagram.com/p/DelQYg-gYmi/", "video": true, "ratio": 0, "score": 2.93, "status": "未处理", "x": 1.5}, {"id": "De_hn21tSBP", "tracker": "Real Estate 竞对", "competitor": "raylashao", "caption": "小小奖状再来一个", "transcript": "", "brk": "", "my": "", "tags": "", "bait": false, "type": "Image", "likes": 13, "comments": 1, "er": 2.3, "followers": 610, "date": "2026-10-27", "url": "https://www.instagram.com/p/De_hn21tSBP/", "video": false, "ratio": 0, "score": 2.62, "status": "未处理", "x": 0.8}, {"id": "DeVbpJhDe3e", "tracker": "Real Estate 竞对", "competitor": "xiaoyangproperty", "caption": "带女儿出国，原来没我想的那么可怕\n#vlog我的一天 #日常vlog #泰国旅游 #曼谷 #亲子旅游 #新加坡房屋经纪", "transcript": "", "brk": "Hook类型: 身份共鸣\n结构: 担忧带娃出国 → 实际体验分享 → 转化个人身份\n为什么火: 击中宝妈群体对海外生活的向往与焦虑，自然衔接职业属性。\n改编角度: 讲讲带娃看房/海外置业的真实体验，吸引同频高净值宝妈客户。", "my": "拿到新 HDB 钥匙那一天，\n其实才是最让人头疼的开始。\n\n很多屋主以为，\n只要把旧 HDB 放上网去卖掉，\n换房子的流程就算顺利完成了。\n\n其实根本不是这么回事。\n看了几个月、谈了几轮，\n转售组屋卖掉之后，\n真正的麻烦才正要开始。\n\n我来告诉你，\n屋主在换房时最常遇到这三件事。\n\n第一，CPF 退款和时间线怎么算。\n卖旧房拿回来的钱，\n要怎么转进 CPF 户头，\n又怎么用在下一个新家上面。\n把这些时间线算清楚，\n才不会在交钥匙时出现资金空档。\n\n第二，遇到买家各种各样的担忧。\n屋龄、装修、延长居住，\n这些细节稍微漏掉一个，\n交易就很可能会直接卡住。\n有人帮忙前前后后把关，\n买卖双方才能真正放心。\n\n第三，新 BTO 的流程和细节。\n不只是把旧家卖掉而已，\n连新房子的申请和交钥匙时间，\n全部都要无缝衔接好。\n这样才不会拿到新钥匙了，\n旧房子却还没处理好。\n\n【剪辑:这里放案例画面】\n之前有一位七十多岁的女屋主，\n拿到新 HDB 钥匙后旧房还没卖掉，\n被 HDB 的六个月期限压得喘不过气。\n我帮她申请延期并一路把关，\n最后顺利完成交易，\n她塞给我一个红包，\n说谢谢我这几个月一直帮他们把关。\n\n以前自己处理这些流程时，\n常常 CPF 和时间线搞得一头雾水；\n现在有专业中介一步一步带你走，\n从卖旧家到买新房都有人顾好。\n\n如果你也准备卖 HDB 换 BTO，\n对时间线或 CPF 还有疑问，\n欢迎找我聊聊。\n\n房子卖掉只是结果，\n把整个过程安排好，才是重点。", "tags": "vlog我的一天, 日常vlog, 泰国旅游, 曼谷, 亲子旅游, 新加坡房屋经纪", "bait": false, "type": "Video", "likes": 51, "comments": 0, "er": 2.49, "followers": 2048, "date": "2026-10-11", "url": "https://www.instagram.com/p/DeVbpJhDe3e/", "video": true, "ratio": 0, "score": 2.49, "status": "未处理", "x": 1.2}, {"id": "DfJJDi7RTAt", "tracker": "Real Estate 竞对", "competitor": "chaletteku", "caption": "你开始变强大的5个表现，看看自己有吗？\n\n#女性成长 #个人成长 #女强人 #自我提升 #赚钱 #人间清醒 #认知觉醒 #强者思维 #chalette", "transcript": "If I ever ever fall down one time, I'mma keep going on Cause I know I'm a champion and if I take a ticket and I'll still ride till the bitter end of time", "brk": "Hook类型: 身份共鸣\n结构: 音乐卡点 → 强者心态宣言 → 个人成长展示\n为什么火: 强能量感的背景音乐搭配坚定自信的口播，精准吸引追求独立成长的女性用户\n改编角度: 结合买房自立场景，展现华人女性在海外独立置业的强者心态与心路历程", "my": "新家钥匙已经拿到手了，／但旧的 HDB 还没卖掉，／真的会让人每天晚上都睡不着觉。🥲\n\n很多人以为，／只要把房子放上网，／买家自然就会上门。\n\n其实这一单，／真的不是\"放上网就会卖掉\"那么简单。\n\n第一步，／先算清楚卖房后的账。\n把 CPF 退款、现金能拿回多少，／还有换房预算全部算好。\n这样才不会在看房的时候一头雾水。\n\n第二步，／把时间线和各种细节安排好。\n屋龄、装修、延长居住、CPF 规定，／买家通常会有各种担忧。\n把这些顾虑一个个列出来，／提前帮他们把关。\n\n第三步，／连新 BTO 的流程也一起顾好。\n不只是卖旧家，／连新房子的时间和细节都要前后顾好。\n有不懂的时候，／随时有耐心解释清楚。\n\n有一位七十多岁的女屋主，／拿到新 HDB 钥匙却迟迟卖不出旧房。\n面对 HDB 的六个月期限非常着急。\n我们帮她申请延期，／最后顺利把房子卖掉。\n\n以前自己处理转售组屋，／常常被时间线和各种文件弄得焦头烂额。\n用对方法把过程一步步安排好之后，／不但顺利完成交易，／还能安心搬进新家。\n\n如果你也准备卖 HDB 换新房，／对时间线或 CPF 还有疑问，／欢迎找我聊聊。\n\n房子卖掉只是结果，／把整个过程安排好，才是重点🏠", "tags": "女性成长, 个人成长, 女强人, 自我提升, 赚钱, 人间清醒, 认知觉醒, 强者思维, chalette", "bait": false, "type": "Video", "likes": 1868, "comments": 8, "er": 2.35, "followers": 79947, "date": "2026-10-31", "url": "https://www.instagram.com/p/DfJJDi7RTAt/", "video": true, "ratio": 0, "score": 2.37, "status": "未处理", "x": 2.6}, {"id": "DeRSAnUTIGD", "tracker": "Real Estate 竞对", "competitor": "xiaoyangproperty", "caption": "一间排屋30万的流量，4个成员都出动了！", "transcript": "四個團隊成員就為了一個viewing今天是一個有難度的viewing所以其實我們已經出動了我們所有有力住宅的成員所以今天我們有本好今天我們有幾個人下來幫我們我 你你剛才有幾個總共幾組總共幾組啊 今天好像15組15組啊 怎麼樣總共幾個組啊 賣掉好不好可以嗎 你覺得可以嗎可以 你說可以嗎可以給你們看一下這個房子超漂亮的 你們看到嗎好那我們在賣的是一間腳頭間的牌物就在倫多這一塊超漂亮 真的走過路過你肯定不會錯過還有Sed up的我現在正在等待其他的買家來那我們在短短的一週之內收穫30萬的流量除此之外我們也已經篩選出20組認真的買家所以希望說可以給到這個屋子找到他下一個主人那跟你們分享今天整個場景如何超多人Series啊超棒他們都把東西整理得乾乾淨淨累不累還會被整整做所以今天我們第一個 open house5幾組12組12組啊都是從你的手續media來的大多數啊對他的也有他的也有他的也有只有我沒有咧我跟你講雖然是你們的可是他們全部來欸 我有錄影過有錄影OK啦 一定在做好好", "brk": "Hook类型: 展示成果\n结构: 团队出动 → 揭秘热度 → 现场实况\n为什么火: 用全员出动和15组看房的高热度展示实力\n改编角度: 拍你团队带看爆款房源全过程突出专业度", "my": "终于拿到新 BTO 钥匙了，／但旧 HDB 还没卖掉怎么办。\n\n这一单，真的不是放上网就会卖掉这么简单。\n\n很多人以为，／只要把屋子照片放上网，／买家就会自己上门。\n\n其实转售组屋没有那么简单，／从屋龄、装修、延长居住、CPF 到时间线，／买家什么顾虑都有。\n\n第一，／先算清楚卖房后能拿回多少现金。／因为很多人不知道 CPF 退款要还多少。／算清楚之后，／你才知道换房的预算在哪里。\n\n第二，／把买家的各种顾虑先排查好。／看屋的时候，／屋龄和装修细节要先准备好资料。／这样买家才不会有一头雾水的感觉。\n\n第三，／时间线和延长居住要提前规划。／新家快到了的时候，／什么时候呈交给建屋局，／什么时候做 legal completion，／都要一步一步帮买家把关好。\n\n我有一个真实的屋主客户，／一位七十多岁的女屋主，／她已经拿到新 HDB 钥匙，／但旧房还没卖掉，／HDB 要求她在六个月内卖房。\n\n她当时非常着急，／担心六个月内卖不出去怎么办。／我们帮她申请了延期，／并一步一步安排，／最后顺利把房子卖掉。\n\n以前自己卖房的时候，／常常不知道文件怎么处理，／对 CPF 和时间线一头雾水。\n\n找我帮忙以后，／不只是卖旧家，／连新 BTO 的流程、时间和细节，／都一起在前前后后顾好。\n\n如果你也准备卖 HDB、换 BTO，／但对 CPF、时间线或延长居住一头雾水，／欢迎找我聊聊。\n\n房子卖掉只是结果，／把整个过程安排好，才是重点。", "tags": "", "bait": false, "type": "Video", "likes": 39, "comments": 2, "er": 2.0, "followers": 2048, "date": "2026-10-09", "url": "https://www.instagram.com/p/DeRSAnUTIGD/", "video": true, "ratio": 0, "score": 2.2, "status": "未处理", "x": 1.1}, {"id": "DfL4TIVJ7ph", "tracker": "Real Estate 竞对", "competitor": "xiaoyangproperty", "caption": "KYA准备干一件大事！\n#新加坡房屋经纪 #新加坡房屋中介 #新加坡房地产 #团队日常 #日常vlog #幕后", "transcript": "", "brk": "Hook类型: 悬念\n结构: 预告大事件引发好奇 → 展示团队筹备日常 → 结尾留白蓄力\n为什么火: 利用“搞大事”的悬念和幕后Vlog形式，拉近与观众距离并建立期待感\n改编角度: 结合新加坡买房痛点，如“新加坡买房即将迎来大变局，我们团队正密谋颠覆传统流程”", "my": "新加坡买房卖房，真的不是放上网就会卖掉这么简单。\n\n很多人以为，只要把屋子照片拍得漂亮，买家自然就会上门。\n\n其实转售组屋没那么容易， CPF 、屋龄和时间线，随便一个细节没处理好，交易随时都会卡住。\n\n作为一个做了十多年房产中介的人，我每天都在帮客户处理这些繁琐的流程。\n\n第一步，先把卖房的时间线和 CPF 退款算清楚。\n因为卖旧家和买新家的时间必须衔接好，才不会出现房子卖了却没地方住的窘境。\n把这些预算和时间算明白，心里才有底。\n\n第二步，帮买卖双方把关各种现实顾虑。\n从装修情况到延长居住的安排，这些细节都要提前和买家沟通好。\n有专人一路盯着这些环节，才不会临时出现状况。\n\n第三步，连新 BTO 的流程和细节也一起顾好。\n不只是把旧家卖掉，连买新房子的手续也要前后衔接顺畅。\n把整个过程安排好，买卖双方才能真正安心。\n\n之前有位七十多岁的女屋主，拿到新 HDB 钥匙后旧房还没卖掉，被六个月的时限急得不行。\n我帮她申请延期并顺利把房子卖掉，最后她塞给我一个红包，说谢谢我这几个月一直帮她把关。\n\n以前自己处理买卖房产时，常常对各种 HDB 规定一头雾水，遇到问题也不知道该问谁。\n现在有专业的中介一路从头到尾帮忙安排，连买家的各种担忧都能提前处理好，整个买卖过程就会顺利很多。\n\n如果你也准备卖 HDB 换 BTO ，但对 CPF 、时间线或延长居住一头雾水，欢迎找我聊聊。\n\n房子卖掉只是结果，把整个过程安排好，才是重点。", "tags": "新加坡房屋经纪, 新加坡房屋中介, 新加坡房地产, 团队日常, 日常vlog, 幕后", "bait": false, "type": "Video", "likes": 29, "comments": 5, "er": 1.66, "followers": 2048, "date": "2026-11-01", "url": "https://www.instagram.com/p/DfL4TIVJ7ph/", "video": true, "ratio": 0, "score": 2.15, "status": "未处理", "x": 1.1}, {"id": "DeWnJNJDSgY", "tracker": "Real Estate 竞对", "competitor": "xiaoyangproperty", "caption": "一个礼拜天，到底能关几套房？\n三个卖家，两个买家，团队还在同一天连关好几套✨\n#新加坡房产 #新加坡房屋经纪 #新加坡买房攻略 #新加坡卖房 #新加坡HDB #新加坡公寓", "transcript": "", "brk": "Hook类型: 成果展示\n结构: 抛出疑问（周日能关几套） → 亮出战绩（三卖两买连关几套） → 团队协作引流\n为什么火: 用具体忙碌的战绩直观展示实力，建立专业靠谱的信任感。\n改编角度: 记录周末带看或签约的真实一天，突出团队高效与市场火爆。", "my": "拿了新 HDB 钥匙的你，／是不是正被 6 个月内必须卖掉旧房的期限压得喘不过气来🥲\n\n很多人以为，／只要把房子放上网／就一定能自己顺利卖掉。\n\n其实做房产久了会发现，／这一单，真的不是\"放上网就会卖掉\"那么简单。\n\n第一，要先把 CPF 的退款和换房预算算清楚。\n因为买家会有各种担忧，\n比如屋龄、装修、延长居住、CPF、时间线，\n这些细节如果没有人从头到尾把关，\n很容易在关键时刻卡住。\n\n第二，遇到买家后要耐心谈几轮。\n看了几个月、谈了几轮，\n才能真正等到适合这间屋子的有缘人。\n不懂的时候，\n你有没有耐心解释，\n其实才是成交的关键。\n\n第三，连新 BTO 的流程、时间和细节也要一起顾好。\n不只是卖旧家，\n连新家的流程和时间也一起前前后后顾好。\n如果遇到建屋局的规定或者需要延长居住，\n就要及时把资料呈交给建屋局。\n\n【剪辑:这里放案例画面】\n有一位 70 多岁的女屋主，\n已经拿到新 HDB 钥匙，但旧房还没卖掉，\n被 6 个月内必须卖房的规定急得不行。\n最后我们帮她顺利申请了延期，\n并且成功把房子卖掉了。\n\n以前自己处理转售组屋时，\n总是对 CPF、时间线和 HDB 规定一头雾水，\n遇到买家砍价或者问装修屋龄时，\n常常不知道该怎么应对。\n现在有 10+ 年经验的 Property Agent 在旁边把关，\n从卖旧家到换 BTO 的每一个流程，\n都有人帮你前前后后顾好。\n\n如果你也准备卖 HDB、换 BTO，\n但对 CPF、时间线或延长居住一头雾水，\n欢迎找我聊聊。\n\n房子卖掉只是结果，\n把整个过程安排好，才是重点🏠", "tags": "新加坡房产, 新加坡房屋经纪, 新加坡买房攻略, 新加坡卖房, 新加坡HDB, 新加坡公寓", "bait": false, "type": "Video", "likes": 32, "comments": 2, "er": 1.66, "followers": 2048, "date": "2026-10-11", "url": "https://www.instagram.com/p/DeWnJNJDSgY/", "video": true, "ratio": 0, "score": 1.86, "status": "未处理", "x": 0.9}, {"id": "DeYAdJrEfmr", "tracker": "Real Estate 竞对", "competitor": "xiaoyangproperty", "caption": "在泰国还吃到超有名的蟹肉料理！\n#泰国 #曼谷 #亲子游 #新加坡房屋经纪 #vlog我的一天 #日常vlog", "transcript": "又是一個還想睡的早上 你看我我還想睡可是我的公主已經拿著我的Instagram是在探索世界啦還順便做了一個壞事 讓他告訴你們然後我們要清洗它嗯所以 什麼 下一回合我們不能做得很久我們不能做得很久很不幸說真的 小阿拉還蠻聽話的最主要是他知錯能改其實當他在學著做一個乖巧的小孩的時候呢我們也在學著做著近者的父母因為畢竟孩子會表現得怎麼樣很多時候呢 當然父母也要負起一半的責任所以呢 整體其實Sharla還是很乖巧的真的嗎好啦 出來玩啦 給你們看一下周圍看得到嗎我已經離地床啊 我害怕我的Instagram60飛走 先收回來那我們的朋友呢 帶我們來到了一個商場雖然我經常和Evi都會來泰國但確實沒有來過這個地方說真的 我也不記得這個地方叫什麼的你們看得出是哪裡嗎如果知道的話 在下面留言讓我知道哦來到了商場吹冷氣外面實在太熱了終於來到這邊吃這邊特別有名的一道泰國餐你們聽過嗎 還在做筍文我也不知道我念不念對有沒有人聽過這個地方呢他們最拿手最拿手的一道呢就是這個蟹肉我都不懂怎麼形容它的味道就特別的回味無窮吃完飯 我們的老婆就去shopping啦我們兩個奶爸就顧著孩子走走街發死了好啦 今天就到這啦關注我 跟你分享我的非常日常我的老婆幾時回來啊我也需要我的man time呀", "brk": "Hook类型: 身份共鸣\n结构: 吐槽带娃日常 → 探店名吃美食 → 奶爸无奈互动\n为什么火: 用真实搞笑的奶爸带娃日常和美食吸引眼球，拉近与粉丝距离\n改编角度: 结合看房行程，展示新加坡买家在海外考察房产时的真实亲子生活状态", "my": "拿到新 BTO 钥匙那一刻，其实才是烦恼的开始。\n\n很多屋主以为，拿了钥匙就能顺理成章开始搬家。\n\n其实根本不是这样，后面还要面对一大堆转售和时间线的流程。\n\n第一步，先把 CPF 的退款和屋契年限算清楚。\n因为这些数字会直接影响到你换房子的预算。\n很多人一开始都一头雾水。\n弄清楚之后，你才不会在卖旧家时乱了手忙。\n\n第二步，把卖旧家和买新房的时间线排好。\n因为 HDB 规定转售的时间点其实很严格。\n把每个步骤的先后顺序顺一遍。\n你才不会卡在中间，两头不到岸。\n\n第三步，找个人帮你把关所有的流程和细节。\n因为从处理 CPF 到搞定延长居住，真的不是放上网就会自动卖掉。\n有经验的人帮你盯着。\n你才能省下很多不必要的烦恼。\n\n【剪辑:这里放案例画面】\n就像我之前帮过的一位屋主，拿了新 HDB 钥匙却卡在旧房还没卖掉。\n当时距离 HDB 的期限只剩下几个月，让她非常着急。\n我们帮她一路处理申请延期，最后顺利完成了买卖。\n\n以前自己摸索的时候，常常为了时间线和 CPF 的问题整夜睡不着。\n现在有专人帮你前前后后顾好，把每个细节都安排妥当。\n\n如果你也准备卖 HDB 换 BTO，但对时间线或 CPF 一头雾水，欢迎找我聊聊。\n\n房子卖掉只是结果，把整个过程安排好，才是重点。", "tags": "泰国, 曼谷, 亲子游, 新加坡房屋经纪, vlog我的一天, 日常vlog", "bait": false, "type": "Video", "likes": 38, "comments": 0, "er": 1.86, "followers": 2048, "date": "2026-10-12", "url": "https://www.instagram.com/p/DeYAdJrEfmr/", "video": true, "ratio": 0, "score": 1.86, "status": "未处理", "x": 0.9}, {"id": "De1hEAGDbQw", "tracker": "Real Estate 竞对", "competitor": "xiaoyangproperty", "caption": "新加坡市区竟然有这种空中别墅？\n这间 #空中别墅 就在 #史蒂芬路，阳台大到招待朋友完全不是问题✨\n#新加坡公寓 #转售公寓 #新加坡买房攻略 #新加坡房屋经纪 #新加坡房地产", "transcript": "这是一套空中别墅你相信吗新加坡竟然有永久地气大约5000平方英尺的公寓欢迎你们来到Stevens Road我现在处于的这个地方就是它的阳台特别大你要招待朋友完全不是个问题说到了户外我们来看一下室内它的客厅以及饭厅家庭休闲区你大平成这个才显得特别大气厨房也是一样的深而且你会发现我们的视野是对着大自然欢迎你来到它的量衣房这边有足够的空间让你有量的佣人都有属于他们的卫生间这是它的家庭休闲区或者是娱乐室够你足够招待朋友还有属于自己的卫生间而且这么大的空间必须要是中央空调才足够的冷这上面后面是你三个卧室左手边就是你的小主卧佩戴在属于自己的卫生间还有自己的小阳台欢迎你来到它的第二个赤卧这赤卧也有属于自己的卫生间以及一个小阳台欢迎你来到主卧有属于自己的部落式衣帽间连主卧的卫生间都是我优势以来看过最大的还有自己的Jakuzy喜欢你所看到的一切吗我是KLS的小阳尽快联系我我带你看看这间房", "brk": "Hook类型: 视觉震撼+反常识疑问\n结构: 黄金阳台展示 → 奢华室内动线 → 核心买点呼吁\n为什么火: 稀缺豪宅视觉冲击搭配极致空间感，精准吸引高净值买家。\n改编角度: 突出当地同价位难寻的稀缺大平层，强化“空中别墅”的尊贵感。", "my": "新家钥匙已经拿到手了，／但旧屋还没卖掉，／真的不是\"放上网就会卖掉\"这么简单。\n\n很多人以为，／只要把房源放上平台，／就一定会有买家马上来谈价钱。\n\n其实根本不是这样，／旧屋转售组屋时，／买家往往有各种各样的担忧。\n\n第一步，／先帮你算清楚旧屋卖掉后的现金回款。\n我们会把 CPF 退款和买房预算全部列出来，／让你对财务状况一清二楚。\n这样在看新 HDB 或者换房时，／心里才不会一头雾水。\n\n第二步，／把关买家的各种顾虑和时间线。\n从屋龄、装修到延长居住，／每一个细节我们都在前面帮你看着。\n谈了几轮下来，／真正适合这间屋子的有缘人才会留下来。\n\n第三步，／连新 BTO 的流程也一起前前后后顾好。\n不只是处理 HDB 的转售，／连新家的交钥匙时间和细节，／我们都会提醒你什么时候呈交给建屋局。\n\n我曾经帮一位七十多岁的女屋主处理过这种情况。\n她拿到新 HDB 钥匙后，／旧房还没卖掉，／被建屋局的六个月期限压着非常着急。\n最后我们不仅帮她申请了延期，／还顺利把房子卖掉。\n\n以前你可能觉得换房是一件让人焦虑的事，／不仅要担心时间线，／还不知道 CPF 怎么处理。\n用对了方法把流程一步步安排好之后，／你会发现整个换房过程其实有人帮你稳稳把关。\n\n如果你也准备卖 HDB 换 BTO，／对时间线或 CPF 一头雾水，／欢迎找我聊聊。\n\n房子卖掉只是结果，／把整个过程安排好，才是重点。", "tags": "空中别墅, 史蒂芬路, 新加坡公寓, 转售公寓, 新加坡买房攻略, 新加坡房屋经纪, 新加坡房地产", "bait": false, "type": "Video", "likes": 30, "comments": 2, "er": 1.56, "followers": 2048, "date": "2026-10-23", "url": "https://www.instagram.com/p/De1hEAGDbQw/", "video": true, "ratio": 0, "score": 1.76, "status": "未处理", "x": 0.9}, {"id": "DeRdyfYlV2u", "tracker": "Real Estate 竞对", "competitor": "xiaoyangproperty", "caption": "顶楼能招待朋友的全新3层排屋\n这间 #排屋 就在 #实里达 ✨\n顶楼推拉门一开，就多了一个招待朋友的好空间，适合大家庭。\n#新加坡房产 #新加坡买房攻略 #新加坡房屋经纪 #新加坡有地住宅 #新加坡排屋", "transcript": "", "brk": "Hook类型: 痛点直击\n结构: 亮点展示 → 空间特写 → 场景带入\n为什么火: 直击多人口家庭对社交与休闲空间的真实需求。\n改编角度: 突出“顶楼多功能空间”，结合本地家庭聚会痛点重构场景。", "my": "拿到了新 HDB 钥匙，／却被建屋局的 6 个月时间线压得喘不过气。\n\n很多人以为，／只要把旧房子放上网，／买家自然就会上门。\n\n其实这一单，／真的不是放上网就会卖掉这么简单。\n\n第一步，／先算清楚卖房后的真实预算。\n很多人只看表面售价，／却忽略了 CPF 退款和现金能拿回多少。\n把这些数字算清楚，／你才不会在换房时突然发现资金不够。\n\n第二步，／提前处理买家的各种担忧。\n屋龄、装修、延长居住，／还有复杂的 CPF 时间线。\n每一个细节都帮买家把关好，／交易才不会走到一半突然卡住。\n\n第三步，／把新家的流程也一起顾好。\n不只是卖旧家，／连新 BTO 的时间和细节也一起前前后后看好。\n有问题的时候有人在，／不懂的时候有人耐心解释。\n\n有一位七十多岁的女屋主，／拿到新钥匙后旧房还没卖出，／非常着急。\n我们帮她申请了延期，／最后顺利把房子卖掉。\n\n以前自己处理，／常常对 CPF 和时间线一头雾水，／甚至担心超过期限。\n用对方法把过程一步步安排好以后，／不仅顺利完成交易，／还能安心搬进新家。\n\n如果你也准备卖 HDB 或者是换新房，／对时间线和 CPF 还有疑问。\n欢迎找我聊聊，／我们一起来看怎么把接下来的每一步都安排好。\n\n房子卖掉只是结果，／把整个过程安排好，才是重点。", "tags": "排屋, 实里达, 新加坡房产, 新加坡买房攻略, 新加坡房屋经纪, 新加坡有地住宅, 新加坡排屋", "bait": false, "type": "Video", "likes": 30, "comments": 1, "er": 1.51, "followers": 2048, "date": "2026-10-09", "url": "https://www.instagram.com/p/DeRdyfYlV2u/", "video": true, "ratio": 0, "score": 1.61, "status": "未处理", "x": 0.8}, {"id": "Dd6SHtrE7Sm", "tracker": "Real Estate 竞对", "competitor": "chaletteku", "caption": "最近很喜欢一句话：\n「车灯只能照亮50米，但你依然能开完全程」\n\n有时候，让我们迟迟不敢出发的，\n是总想先确定：\n这样选对不对？\n万一做不好怎么办？\n最后会不会白忙一场？\n\n可很多事情，真的要走了才知道\n你不走，只是想，永远没有答案\n\n绕了一点路，不代表之前的努力都白费了\n暂时看不清远方，也不妨碍你先走好眼前这一段\n\n愿我们都能少一点对未来的焦虑，\n多一点出发的勇气\n\n命运从没有标准答案，\n生活也无需事事圆满\n\n这14句话里，哪一句最像此刻的你？\n\n#Chalette #成长 #人生感悟 #生活 #活在當下", "transcript": "", "brk": "Hook类型: 身份共鸣\n结构: 金句引入 → 戳中买房焦虑 → 鼓励迈出第一步\n为什么火: 击中买房族对未来的不确定与决策焦虑，提供情绪价值\n改编角度: 结合买房买地，用“不必等攒够完美首付才开始”切入，激发置业勇气", "my": "新家钥匙拿到了，\n旧 HDB 却还没卖掉。\n\n有时候，让我们迟迟不敢换房的，\n是总想先确定：\n6 个月期限到了卖不出去怎么办？\n万一 CPF 算错、时间线卡住怎么办？\n\n可买卖房产真的要一步步走才知道，\n你不去处理，只是想，永远没有答案。\n\n绕了一点路，不代表之前的准备都白费了，\n暂时看不清接下来的流程，\n也不妨碍你先把眼前这一段顾好。\n\n第一，先算清楚 CPF 退款和换房预算。\n我知道很多人对 CPF 和现金能拿回多少一头雾水，\n其实只要把买卖屋子的时间线排好，\n数字算出来，心里就会有底。\n\n第二，把买家的各种顾虑提前往前看。\n转售组屋的屋龄、装修和延长居住，\n这些买家会担心的问题，\n其实可以提前和买家沟通清楚。\n\n第三，新旧房子的流程一起前后顾好。\n不只是卖旧家，\n连新 BTO 的时间和细节也一起把关，\n有问题的时候有人在，\n不懂的时候有人耐心解释。\n\n【剪辑:这里放案例画面】\n就像我帮过的一位 70 多岁女屋主，\n拿到新 HDB 钥匙却迟迟卖不出旧房，\n非常着急，\n我们一路帮她申请延期，\n最后顺利完成了交易。\n\n以前换房时，\n大家常常卡在时间线和各种条例里，\n觉得换房是一件压力很大的事；\n用对方法把过程一步步安排好以后，\n其实是可以安稳完成的。\n\n如果你也准备卖 HDB、换 BTO，\n但对 CPF、时间线或延长居住一头雾水，\n欢迎找我聊聊。\n\n房子卖掉只是结果，\n把整个过程安排好，才是重点。", "tags": "Chalette, 成长, 人生感悟, 生活, 活在當下", "bait": false, "type": "Carousel", "likes": 1179, "comments": 2, "er": 1.48, "followers": 79947, "date": "2026-09-30", "url": "https://www.instagram.com/p/Dd6SHtrE7Sm/", "video": false, "ratio": 0, "score": 1.48, "status": "未处理", "x": 1.6}, {"id": "DetkYCEDUxC", "tracker": "Real Estate 竞对", "competitor": "chaletteku", "caption": "留言【AI剪辑】，我发你我的秘密！🤫㊙️\n\n#ai #codex #自动剪辑 #ai剪辑 #chatcut #chalette", "transcript": "不要打野你現在看到的字幕我人物旁邊的描邊我後面展示的圖片還有我手上這兩個會旋轉的Logo都是我用一句話讓AI幫我剪輯製作的就算今天你不會剪輯或會設計Videos的畫面也可以輕輕鬆鬆做到我這樣子的特效如果你也想要學會只要用AI實現自動剪輯在下面考驗一個AI剪輯我發你我的秘密", "brk": "Hook类型: 痛点直击+效率承诺\n结构: 痛点展示(不会剪辑) → AI效果演示 → 行动呼吁(留言领秘籍)\n为什么火: 击中小白想快速做特效的痛点，用视觉冲击配合私信钩子引导转化。\n改编角度: 替换为买房痛点，如用AI一键筛选全美高性价比房源，评论区留暗号发资料。", "my": "拿到新 HDB 钥匙的那一刻，／你是不是也在担心旧房到底能不能在 6 个月内卖掉？\n\n很多人以为，／只要把房子资料放上网，／买家就会自己上门。\n\n其实不是，／真正让人头痛的，／往往是转售组屋后面的各种细节。\n\n第一步，／先算出 CPF 退款和换房预算。\n清楚知道自己能拿回多少现金，／才不会在看房时一头雾水。\n这几年的经验告诉我们，／先把数字算清楚，／后面的路才走得稳。\n\n第二步，／把买家的各种顾虑提前处理好。\n不管是屋龄、装修还是延长居住，／都要一条一条帮他们把关。\n有耐心帮买家解释时间线，／交易才能真正顺利进行。\n\n第三步，／连新 BTO 的流程也一起前前后后顾好。\n不只是卖旧家，／连新家的交钥匙时间和细节都要盯紧。\n把整个过程安排好，／屋主才不会整天提心吊胆。\n\n以前自己处理这些流程时，／常常为了 CPF 和时间线急得团团转。\n现在只要跟着这几个步骤，／把每一个细节都安排妥当，／换房其实没有想象中那么难。\n\n如果你也准备卖 HDB 换 BTO，／但对 CPF、时间线或延长居住一头雾水，／欢迎找我聊聊。\n\n房子卖掉只是结果，／把整个过程安排好，才是重点🏠", "tags": "ai, codex, 自动剪辑, ai剪辑, chatcut, chalette", "bait": true, "type": "Video", "likes": 198, "comments": 310, "er": 0.64, "followers": 79947, "date": "2026-10-20", "url": "https://www.instagram.com/p/DetkYCEDUxC/", "video": true, "ratio": 0, "score": 1.41, "status": "未处理", "x": 1.5}, {"id": "DeTEXBikuBd", "tracker": "Real Estate 竞对", "competitor": "chaletteku", "caption": "留言【GPT】，我把另外40个提示词发给你！😉\n\n#chatgpt #ai #prompt #trend #gpt #photodesign #chalette", "transcript": "終於整個遠遠轉轉", "brk": "Hook类型: 痛点直击\n结构: 痛点引入 → 价值承诺 → 评论区引导\n为什么火: 利用AI工具效率提升的痛点，通过免费资料包诱导评论互动，算法顺势推流。\n改编角度: 评论区留言【买房】，免费送洛杉矶40个高性价比学区房避坑指南。", "my": "拿到了新 HDB 钥匙，／却被 6 个月内必须卖掉旧房的时间线压得喘不过气吗？\n\n很多人以为，／只要把旧屋放上网，／或者随便找个中介，／房子自然就会顺利卖掉。\n\n其实这一单，／真的不是放上网就会卖掉那么简单。\n\n第一，／要把 CPF 退款和卖房现金算清楚。／如果对 CPF、时间线或延长居住一头雾水，／买家就会有各种担忧。／只要把这些细节提前理顺，／买家才敢安心跟你谈。\n\n第二，／是要一路帮卖家把关整个过程。／不只是卖旧家，／连新 BTO 的流程、时间和细节，／也要一起前前后后顾好。／这样有问题的时候你才找得到人，／不懂的时候才有人耐心地解释。\n\n第三，／是遇到像 70 多岁女屋主那样，／旧房还没卖掉、6 个月期限快到的时候，／要懂得去帮她申请延期。／把整个过程安排好，／房子卖掉只是自然的结果。\n\n以前很多人自己去搞这些转售组屋流程，／常常看了几个月、谈了几轮，／却因为屋龄、装修或时间线卡在半路。\n\n现在只要有专业中介从头到尾把关，／帮你处理好 CPF 和 HDB 规定，／连新房钥匙和流程也一起顾好。\n\n如果你也准备卖 HDB、换 BTO，／但对时间线或 CPF 一头雾水，／欢迎找我聊聊。\n\n房子卖掉只是结果，／把整个过程安排好，才是重点。", "tags": "chatgpt, ai, prompt, trend, gpt, photodesign, chalette", "bait": true, "type": "Video", "likes": 584, "comments": 176, "er": 0.95, "followers": 79947, "date": "2026-10-10", "url": "https://www.instagram.com/p/DeTEXBikuBd/", "video": true, "ratio": 0, "score": 1.39, "status": "未处理", "x": 1.5}, {"id": "DfhFta1BNPb", "tracker": "Real Estate 竞对", "competitor": "xiaoyangproperty", "caption": "A #5room #HDB in Sengkang that stays bright all day\nThe owners decked out the old balcony, so the home stays bright rain or shine.\n#singaporeproperty #sgrealtor #resalehdb #hdbflat #sghdb #sengkang #rivervale", "transcript": "$650,000 can get you a spacious 5-room flat at 128 Rivervale Street. Without further ado, let's go. Welcome to this $1,292 square feet 5-room main door facing west unit. Now as we step right in, I think the very first thing you will notice is the distance that we have, the weave that we have in the foyer area. Now on the right hand side will be your kitchen. So your kitchen is nicely done up because why it has a clear segregation between the yard area as well as where the kitchen is. Now on the left hand side will be your common bathroom. This is the best part of the entire house. Now standing where I am, you get to see everything. On the left hand side, you can see that they have their dining, living side by side. And for the very first time, let me share with you something. How often do you even have zip track in an HDTV? Now this is only something that you can do if you have space and it comes with a balcony. Now the good thing about this is that it used to be a balcony but what the owners have done up is that they have decked out allowing more natural light and natural ventilation to come into the unit. So regardless of what time of the day, whether it's sunny, whether it's it's not rainy, the house remains very bright. On the right hand side will be another common room, totally no built-in at all other than the light as well as the air conditioner. And finally welcome to the master. So of course you can see that they are a big family. They have a kids living next to them as well as a newborn. So now behind here what they have done is separated these into a kids play area and the other side will be your walk-in wardrobe. And of course behind would be your master bathroom. So we have come today out of this particular unit. Let's talk about what we have around the area. We are approximately 812 meters walk to Sengkang MRT station. Now within one kilometer we have five primary schools. We have five groceries. And finally within two kilometers we have seven more. Before we end off this unit do not require any extension. So if you love this, if you love the fact that you can move in as soon as possible within the next one to two weeks we will be having open house. My name is Kenneth Hong, K-Wire Estate and I will see you guys at the open house.", "brk": "Hook类型: 数字承诺\n结构: 价格总览 → 空间动线 → 亮点改造 → 配套与入住条件\n为什么火: 用具体预算切入，精准锁定刚需买家，突出高性价比与空间亮点\n改编角度: 强调总价与学区优势，针对华人买家突出空间大和免延期入住痛点", "my": "拿到了新 HDB 钥匙，／旧房却还没卖掉。\n\n很多屋主以为，／只要把房子放上网，／就一定能马上找到买家。\n\n其实真的没有这么简单。\n\n如果时间线没算好，／屋龄、装修和 CPF 的问题卡在中间，／就会非常着急。\n\n第一步，／先算清楚卖房能拿回多少现金。／把 CPF 退款和换房预算都算好，／心里才会比较踏实。\n\n第二步，／把转售组屋的各种顾虑先理清楚。／不管是延长居住还是时间线，／都要提前和买家沟通好。\n\n第三步，／新 BTO 的流程和细节也要一起前前后后顾好。／这样才不会两头忙，／弄得一头雾水。\n\n之前有个 70 多岁的女屋主，／拿到新 HDB 钥匙后，／旧房在 6 个月内还没卖出去。\n\n她非常担心，／因为 HDB 规定必须在期限内处理好。\n\n以前她自己一头雾水，／不知道该怎么申请延期和处理时间线。\n\n找我帮忙规划之后，／我们一步步把 CPF、文件和延期申请都安排好，／最后顺利把房子卖掉。\n\n如果你也准备卖 HDB 换新房，／但对时间线和 CPF 一头雾水，／欢迎找我聊聊。\n\n房子卖掉只是结果，／把整个过程安排好，才是重点。", "tags": "5room, HDB, singaporeproperty, sgrealtor, resalehdb, hdbflat, sghdb, sengkang, rivervale", "bait": false, "type": "Video", "likes": 28, "comments": 0, "er": 1.37, "followers": 2048, "date": "2026-11-09", "url": "https://www.instagram.com/p/DfhFta1BNPb/", "video": true, "ratio": 0, "score": 1.37, "status": "未处理", "x": 0.7}, {"id": "De6V8v4hivm", "tracker": "Real Estate 竞对", "competitor": "xiaoyangproperty", "caption": "完全原装的四房式HDB，等你来规划\n这间 #四房式 就在 #兀兰，位于顶楼，坐南朝北特别通风✨\n整间屋子几乎没有固定装修，可以随你规划想要的风格🏡\n#新加坡组屋 #买hdb #组屋 #新加坡买房攻略 #新加坡房屋经纪 #新加坡HDB", "transcript": "", "brk": "Hook类型: 身份共鸣\n结构: 场景展示 → 卖点解析 → 行动呼吁\n为什么火: 精准捕捉买家对毛坯房个性化装修的向往\n改编角度: 突出毛坯HDB的超高性价比与自主设计潜力", "my": "拿到新 HDB 钥匙却发现旧屋还没卖掉，手里还卡着六个月期限的屋主，真的每天都在担心转售组屋会卖不出去。\n\n很多人以为，只要把屋子放上网，或者找个中介随便卖，就一定能顺利脱手。\n\n其实不是，这一单真的不是放上网就会卖掉那么简单。\n\n第一，先算清楚 CPF 退款和换房预算。\n很多人一开始不知道自己卖完旧屋能拿回多少现金。\n其实只要先把这些数字算明白，你才不会在换新家的时候一头雾水。\n算清楚之后，你心里的压力就会少很多。\n\n第二，把时间线和延长居住安排好。\n买家会有各种顾虑，比如屋龄、装修和时间线。\n其实你只需要把这些细节一个个列出来，提前和买家沟通好。\n把时间线排顺了，整个交易才不会临时卡住。\n\n第三，连新 BTO 的流程也一起前前后后顾好。\n不只是卖旧家，新家的各种手续其实也要同步处理。\n其实只要有人帮你把关，连建屋局的文件什么时候呈交都能帮你看着。\n这样你才不会两头忙得焦头烂额。\n\n有一次，一位七十多岁的女屋主，拿到新 HDB 钥匙后旧房还没卖掉。\n她被六个月的期限压得非常着急，还担心卖不出去怎么办。\n我们帮她申请了延期，并一路把转售组屋顺利卖掉。\n\n以前大家卖房总是自己瞎紧张，遇到问题不知道该问谁，常常卡在时间线和 CPF 的细节上。\n用对方法把过程一步步安排好以后，不仅流程顺了，连买家的各种担忧也都有人帮忙处理。\n\n如果你也准备卖 HDB、换 BTO，但对 CPF、时间线或延长居住一头雾水，欢迎找我聊聊。\n\n房子卖掉只是结果，把整个过程安排好，才是重点。", "tags": "四房式, 兀兰, 新加坡组屋, 买hdb, 组屋, 新加坡买房攻略, 新加坡房屋经纪, 新加坡HDB", "bait": false, "type": "Video", "likes": 28, "comments": 0, "er": 1.37, "followers": 2048, "date": "2026-10-25", "url": "https://www.instagram.com/p/De6V8v4hivm/", "video": true, "ratio": 0, "score": 1.37, "status": "未处理", "x": 0.7}, {"id": "De6m2ZEn4kV", "tracker": "Real Estate 竞对", "competitor": "chaletteku", "caption": "Slow days in Hanoi 🇻🇳\n\n#hanoi #vietnam #trip #slowday", "transcript": "", "brk": "Hook类型: 身份共鸣\n结构: 视觉展示 → 情绪渲染 → 生活方式共鸣\n为什么火: 用极具治愈感的慢节奏生活画面击中高压都市人群向往松弛感的情绪\n改编角度: 拍海外置业者的理想生活方式，用“慢节奏+好房子”吸引追求品质的买家", "my": "拿到新 BTO 钥匙那一刻，\n其实才是最紧张的开始。\n\n很多人以为，\n房子拿到手就可以慢慢来，\n旧 HDB 慢慢放上网卖就好。\n\n其实时间根本不够用，\n转售组屋、CPF 退款、时间线卡在一起，\n一头雾水的时候，\n压力真的很大。\n\n第一步，\n先算清楚时间线。\n把旧家转售和新 BTO 的时间对准，\n因为 legal completion 大约需要几个月完成交易，\n才不会两头扑空。\n\n第二步，\n把买家的各种顾虑先处理好。\n屋龄、装修、延长居住、CPF 这些细节，\n其实买家比你更在意，\n提前准备好，\n才不会谈了几轮又卡住。\n\n第三步，\n有问题的时候一定要有人在。\n不管是文件呈交给建屋局，\n还是新 BTO 的流程和细节，\n都需要有人前前后后帮你把关。\n\n以前自己处理，\n面对各种 HDB 规定常常不知道下一步做什么。\n\n现在有 10+ 年经验帮你把关，\n不只是卖旧家，\n连新家流程也一起顾好。\n\n房子卖掉只是结果，\n把整个过程安排好，才是重点。\n\n如果你也准备卖 HDB、换 BTO，\n但对 CPF、时间线或延长居住一头雾水，\n欢迎找我聊聊。\n\n房子卖掉只是结果，\n把整个过程安排好，才是重点🏠", "tags": "hanoi, vietnam, trip, slowday", "bait": false, "type": "Carousel", "likes": 841, "comments": 8, "er": 1.06, "followers": 79947, "date": "2026-10-25", "url": "https://www.instagram.com/p/De6m2ZEn4kV/", "video": false, "ratio": 0, "score": 1.08, "status": "未处理", "x": 1.2}, {"id": "DeWoluYE2aM", "tracker": "Real Estate 竞对", "competitor": "chaletteku", "caption": "很多内耗都来自过度解读\n\n不必猜透每个人的心思，\n也不必事事都寻找答案\n\n把关注点放回自己身上，\n生活自然会轻松很多\n\n你呢？\n你是容易想太多的人，还是不太在意别人的人？😂\n\n#情感 #情感共鸣 #关系 #人际关系", "transcript": "", "brk": "Hook类型: 痛点直击\n结构: 抛出内耗现象 → 给出解法 → 互动提问\n为什么火: 精准击中当代华人的心理焦虑，引发强烈的身份共鸣与评论区互动\n改编角度: 结合买房内耗，如“看房总怕买贵踩坑？把关注点放回自身需求，其实没那么难”", "my": "很多换房的屋主，其实都是被时间线和 HDB 规定内耗到不行的🥲\n\n你可能以为，\n卖房子只要放上网就有人来买，\n或者只要降价就能马上解决。\n\n其实这一单，真的不是放上网就会卖掉这么简单。\n\n我们来看三个把关的重点。\n\n第一步，\n把屋龄、装修和 CPF 的细节先算清楚。\n因为买家会有各种担忧，\n你得提前把这些顾虑都排查好。\n这样做能让后面的流程顺很多。\n\n第二步，\n把时间线和延长居住的安排对接好。\n因为换房最怕新家和旧家交接不上，\n你要把每一个步骤的时间都掐准。\n把关做好了，买家才敢安心谈。\n\n第三步，\n连新 BTO 的流程和细节也一起前前后后顾好。\n因为不只是卖旧家，\n买新房的每一步其实都需要有人提醒。\n这样做能帮你省下很多不必要的麻烦。\n\n【剪辑:这里放案例画面】\n一位 70 多岁的女屋主，已经拿到新 HDB 钥匙，但旧房还没卖掉。HDB 要求她在 6 个月内卖房，让她非常着急。因为保留了我们的宣传单张而联系我们。她最担心的是：如果 6 个月内卖不出去怎么办？最后我们帮她申请延期，并成功卖出房子。\n\n以前你可能觉得，\n卖 HDB、换 BTO 就是自己上网看资料，\n结果对 CPF、时间线和延长居住一头雾水，\n整天担心房子卖不出去。\n\n现在只要找我聊聊，\n我会帮你把整个卖房和换房的过程，\n从头到尾前前后后都安排好。\n\n如果你也准备卖 HDB、换 BTO，\n但对 CPF、时间线或延长居住一头雾水，\n欢迎找我聊聊。\n\n房子卖掉只是结果，\n把整个过程安排好，才是重点", "tags": "情感, 情感共鸣, 关系, 人际关系", "bait": false, "type": "Carousel", "likes": 725, "comments": 2, "er": 0.91, "followers": 79947, "date": "2026-10-11", "url": "https://www.instagram.com/p/DeWoluYE2aM/", "video": false, "ratio": 0, "score": 0.91, "status": "未处理", "x": 1.0}, {"id": "DelF7QZlURp", "tracker": "Real Estate 竞对", "competitor": "chaletteku", "caption": "留言【风扇】，我把我的制作流程发给你😉㊙️\n\n#风扇变装 #trend #ai #aivideo #higgsfield #chalette", "transcript": "", "brk": "Hook类型: 悬念与独家秘籍直击\n结构: 视觉吸睛变装 → 引导私信留言 → 钩子自动化引流\n为什么火: 利用AI热门变装视觉效果吸引眼球，设置私信暗号快速筛选精准意向粉丝。\n改编角度: 房产视频结尾用“留言【降息】送买房攻略”，用独家干货引流获取精准客户线索。", "my": "拿到新家钥匙以后，旧的组屋其实真的不是放上网就会马上卖掉。\n\n很多人以为，只要屋子照片拍得好看，或者丢给不同中介去放盘，买家自然就会排队来买。\n\n其实转售组屋交易从来没有这么简单，往往卡在买家有各种各样的担忧。\n\n第一步，先把 CPF 和屋龄的账算清楚。\n在买卖开始之前，先帮买家把屋龄、CPF 退款和现金流的问题理顺。\n因为很多买家最怕买到屋契不够的旧屋。\n把这些数字提前算好，买家看房的时候才不会一头雾水。\n\n第二步，把买卖两边的时间线咬合好。\n从卖旧家到买新 BTO，中间的转折其实有很多细节。\n特别是遇到买家需要延长居住或者装修期的时候。\n把每一个环节的日期前后对准，才不会发生拿到新钥匙却没地方住的窘境。\n\n第三步，随时解答买家和屋主的各种疑虑。\n做房产这么多年会发现，客户最后记得的其实不是你帮他卖了多少钱。\n而是有问题的时候你有没有在，不懂的时候你有没有耐心解释。\n把整个过程前前后后都顾好，交易才能真正顺利完成。\n\n以前有些屋主自己处理，结果卡在 HDB 的各种规定和时间线里面，每天都在担心 6 个月内卖不出去怎么办。\n现在跟着我的节奏走，把 CPF、延长居住和交钥匙的时间全部安排妥当，拿到新家钥匙的那一刻才能真正安心。\n\n如果你也准备卖 HDB 换 BTO，但对 CPF、时间线或者延长居住一头雾水，欢迎找我聊聊。\n\n房子卖掉只是结果，把整个过程安排好，才是重点。", "tags": "风扇变装, trend, ai, aivideo, higgsfield, chalette", "bait": true, "type": "Video", "likes": 385, "comments": 109, "er": 0.62, "followers": 79947, "date": "2026-10-17", "url": "https://www.instagram.com/p/DelF7QZlURp/", "video": true, "ratio": 0, "score": 0.89, "status": "未处理", "x": 1.0}, {"id": "DeRKSAdk7Cw", "tracker": "Real Estate 竞对", "competitor": "chaletteku", "caption": "Tennis retreat in Hanoi 🎾\n\n#wilson #wilsontennis #vietnam #tennis #tennistraining", "transcript": "", "brk": "Hook类型: 身份共鸣\n结构: 场景切入 → 兴趣展示 → 结果呈现\n为什么火: 精准捕捉特定圈层生活方式，满足受众对高端松弛感的向往\n改编角度: 展示大湾区高净值客户打球看房的精英生活方式，切入高端置换需求", "my": "拿到新 HDB 钥匙却开心不起来🏠\n很多人以为拿到新钥匙就是结束，\n其实这只是开始。\nHDB 要求在 6 个月内把旧房卖掉，\n屋龄、装修、延长居住、CPF、时间线，\n一堆问题全涌上来，\n一头雾水真的会让人很焦虑。\n其实，关键不是慌着放上网，\n而是要把整个流程和时间线提前规划好。\n第一，先做免费房产咨询，\n算清楚卖房后能拿回多少现金、\nCPF 退款和换房预算，\n心里有个底，才不会手忙脚乱。\n第二，把关好转售组屋的每个细节，\n不管是买家的各种担忧，\n还是屋龄和装修的沟通，\n都有人帮你耐心解释，\n谈几轮才能找到真正适合的有缘人。\n第三，提前注意 legal completion 的时间，\n如果新家可能会延迟交钥匙，\n要及时去申请延期，\n连新 BTO 的流程和时间一起前前后后顾好。\n以前很多屋主自己弄，\n常常卡在时间线和 CPF 上，\n急得不知道该怎么办。\n其实找个有经验的 Property Agent 在旁边，\n帮你把关好每一个步骤，\n有问题的时候有人在，\n整个过程就会顺利很多。\n如果你也准备卖 HDB、换 BTO，\n但对 CPF、时间线或延长居住一头雾水，\n欢迎找我聊聊。\n房子卖掉只是结果，\n把整个过程安排好，才是重点🏠", "tags": "wilson, wilsontennis, vietnam, tennis, tennistraining", "bait": false, "type": "Carousel", "likes": 520, "comments": 8, "er": 0.66, "followers": 79947, "date": "2026-10-09", "url": "https://www.instagram.com/p/DeRKSAdk7Cw/", "video": false, "ratio": 0, "score": 0.68, "status": "未处理", "x": 0.7}, {"id": "De1SxjpAot9", "tracker": "Real Estate 竞对", "competitor": "chaletteku", "caption": "留言 【video】 ，我发你完整Claude 视频特效prompt 🔥\n\n我最喜欢用的是第 18 😂， 你呢？\n\nFollow 我学会更多AI内容策略\n#claude #claudeai #videoediting #motiongraphics #contentcreator", "transcript": "数据推进打扣清单拉远接视冲刺转场玻璃大致手挥斗动绿幕幻景杂志封面数据远黄丝纸转场手机框标题墙变焦破框黄绕卡片UI世界回顾照片墙文字在表后面组织动态字幕想要19个Cloud视频特效Prob留言Videos我发完整的教程给你", "brk": "Hook类型: 数字承诺\n结构: 抛出清单 → 展示效果 → 引导私信\n为什么火: 用具体数字引发好奇，免费干货资料诱饵精准钩取潜在粉丝。\n改编角度: 盘点10个湾区高性价比学区房，留言领详细PDF资料。", "my": "新家钥匙拿到手的时候，其实才是真正挑战的开始。\n\n很多屋主以为，只要把屋子放上网，很快就能顺利卖掉。\n\n其实这一单，真的不是放上网就会卖掉这么简单。\n\n第一，先算清楚 CPF 和时间线。\n我们要把卖旧家和买新房子的时间节点对齐，才不会卡在中间。\n只要把这个步骤理清楚，后面的流程就会顺很多。\n\n第二，处理买家的各种顾虑。\n买家看房时会担心屋龄、装修还有延长居住的问题。\n只要我们有耐心帮他们一一解释清楚，买卖双方才能达成共识。\n\n第三，连新 BTO 的流程一起顾好。\n不只是卖旧家，连新房子的时间和细节也要前后顾好。\n只要把这些琐碎的事情都安排妥当，整个过程就会安心很多。\n\n【剪辑:这里放案例画面】\n以前客户总是为了 CPF 和时间线一头雾水，常常担心卖不出去怎么办。\n后来用对方法把整个过程安排好，连成交当天卖家还特地塞了一个红包。\n客户最后记得的，不一定是你帮他卖了多少钱，而是有问题的时候你有没有在。\n\n如果你也准备卖 HDB 或者换 BTO，\n但对 CPF、时间线或延长居住一头雾水，\n欢迎找我聊聊。\n\n房子卖掉只是结果，把整个过程安排好，才是重点。", "tags": "claude, claudeai, videoediting, motiongraphics, contentcreator", "bait": true, "type": "Video", "likes": 103, "comments": 106, "er": 0.26, "followers": 79947, "date": "2026-10-23", "url": "https://www.instagram.com/p/De1SxjpAot9/", "video": true, "ratio": 0, "score": 0.53, "status": "未处理", "x": 0.6}, {"id": "De3HmCJNPb3", "tracker": "Real Estate 竞对", "competitor": "chaletteku", "caption": "一定要远离长期贬低消耗你的人！\n\n#个人成长 #女性成长 #认知觉醒 #人间清醒 #负能量 #内耗", "transcript": "如果你每一次跟一個人見面完你都開始去懷孕你自己我跟你講 這種人你連見都不要再一見了就算是很多年的朋友說話很多年的親戚也可以我跟一個人出去就有兩個原因第一個原因就是我開心我跟你在一起我會有情緒上面的價值第二個東西就是我要做事情要談生意如果這兩個人都沒有站起床一個人說 既然你出去是為了什麼你跟他講我要減肥他就跟你講減什麼肥你不能收的你跟他講我想要找一個健身房去做均找一個老師但他就跟你講你三分鐘的獨當費錢你講什麼都是錯的跟他出去你又沒有辦法快樂得到事業上面的麻煩全部都沒有重要的感覺所以我跟你講我的人生是很少朋友的甚至可以講沒有朋友因為很多人他都是不想你過得好的甚至有些父母都看不順眼他的孩子過得比他還要好人就是會有這種進度的心我不是講你有這個東西是過的但是你能不能控制你自己很多人他沒有辦法控制他自己度自己的心他就會用言語行為來傷害你你要有個成熟的思維你才能夠控制好你自己像小孩子這樣沒有辦法得到這個玩具他就要哭了你不會嗎因為你會控制你自己嗎這個是你行為上面的控制你你剛才在思想上面很多人是不會的就算他上次是50所以他歲數沒有關係是他成熟的問題所以他就會想要懂你懂要你過你就不爽就不要玩玩那該要花更多的時間盡力去更讓你愉快讓你有所成就的人在一起就夠了如果你跟你自己相處就能夠很愉快你完全可以我在你自己的世界裡面", "brk": "Hook类型: 痛点直击\n结构: 抛出毒友现象 → 举例痛点场景 → 深度人性剖析 → 给出远离建议\n为什么火: 精准踩中成年人社交内耗与嫉妒心理，引发强烈共鸣与情绪宣泄。\n改编角度: 盘点买房路上打击你预算和需求的“毒闺蜜/亲戚”，劝告远离他们独立做决策。", "my": "拿到新 HDB 钥匙却发现旧屋还没卖掉，我跟你讲，这种时间线压力你真的不要自己一个人扛。\n\n很多人买房换房的时候，身边的亲戚朋友就会开始出各种主意。\n\n你跟他们说，我拿到新家钥匙了，但 HDB 要求 6 个月内必须把旧屋卖掉，真的很担心。\n\n他们就会跟你讲，担心什么，直接随便降价卖掉就好了啦。\n\n你跟他们说，我想要找一个真正懂流程的 Agent 来把关 CPF 和转售手续。\n\n但他们就会跟你讲，找什么中介，还要给佣金，浪费那个钱。\n\n你讲什么规划都是错的，跟着他们的意见去做，不仅没有解决问题，反而把时间线弄得一团糟。\n\n所以我做了十多年房地产，看多了这样的情况，很多人其实并不懂里面的规定，却喜欢用自己的想法来干涉你的决定。\n\n人就是这样，遇到不确定的时候，往往会用各种担忧来影响你的判断。\n\n关键是，你能不能把专业的事交给专业的人，而不是被这些杂音打乱节奏。\n\n像买卖 HDB 这样的大事，如果连时间线、CPF 退款和延长居住都搞不清楚，就会每天都在焦虑。\n\n所以，把时间花在真正帮你把关、把整个过程安排好的人身上就够了。\n\n如果你准备卖 HDB 换 BTO，但对 CPF、时间线或延长居住一头雾水，欢迎找我聊聊。\n\n房子卖掉只是结果，把整个过程安排好，才是重点。", "tags": "个人成长, 女性成长, 认知觉醒, 人间清醒, 负能量, 内耗", "bait": false, "type": "Video", "likes": 399, "comments": 4, "er": 0.5, "followers": 79947, "date": "2026-10-24", "url": "https://www.instagram.com/p/De3HmCJNPb3/", "video": true, "ratio": 0, "score": 0.51, "status": "未处理", "x": 0.6}, {"id": "Dfbpg9BNlYP", "tracker": "Real Estate 竞对", "competitor": "chaletteku", "caption": "创业到现在，我最庆幸的一件事，就是当初别人不看好我的时候，我还是选择继续走下去。\n\n23岁做intern，一个月赚RM1000；\n24岁的时候，甚至一度没有收入。\n\n那时候连我自己都不知道未来会怎样，更不要讲，要别人相信我以后可以开自己的公司、拥有自己的团队，从自己1个人，拼到现在10多个人。\n\n在还没有做出成绩之前，被质疑是家常便饭。\n以前会想解释，后来才发现，解释再多，也不如把眼前的事情做好。\n\n创业让我慢慢学会，不再每做一个决定，都向别人要认可。\n如果每走一步，都要等别人觉得我可以，那我可能到今天都还停在原地。\n\n不会，就去学；做了没有效果，就找原因、换方法。\n**解决问题，而不是被问题解决。**\n\n我也不是一开始就知道自己选对了，而是在一次次解决问题的过程中，把这条路慢慢走通。\n\n我很庆幸，当初没有因为别人的不看好，就选择放弃。\n\n接下来，还有很多想做的事。\n希望再过5年回头看，我也能像今天一样，庆幸自己有继续往前走。\n\n我们一起加油❤️\n\n#创业 #女性创业 #人间清醒 #认知觉醒 #女性独立 #相信自己 #女老板 #创业心得 #chalette", "transcript": "I'm a version with no brakes. I'm invincible. And I will never see you.", "brk": "Hook类型: 身份共鸣\n结构: 过去低谷期 → 遭遇质疑 → 顿悟前行\n为什么火: 真实逆袭故事切中奋斗者心境，引发强烈情感共鸣\n改编角度: 讲述自己从房地产菜鸟到独立带团队的逆袭心路历程", "my": "拿到新 HDB 钥匙的时候，其实不是最开心的，而是每天都在担心，6个月内要是旧房卖不出去怎么办。\n\n很多人以为，只要把屋子放上网，买家自然就会上门。\n\n其实这一单，真的不是放上网就会卖掉这么简单。\n\n遇到买家的时候，各种担忧全部跑出来。\n\n屋龄、装修、延长居住、CPF、时间线，几乎什么顾虑都有。\n\n看了几个月、谈了几轮，才终于等到真正适合这间屋子的有缘人。\n\n如果每走一步，都在等别人告诉你屋子一定能卖掉，那你可能到今天都还停在原地。\n\n不会，就去学；看了没有效果，就找原因、换方法。\n\n解决问题，而不是被问题解决。\n\n做房产10多年下来，我帮助超过100人顺利完成买卖。\n\n我不是一开始就什么都懂，而是在一次次帮客户把关的过程中，把这条路慢慢走通。\n\n以前客户常常一头雾水，不知道 CPF 怎么算、时间线怎么排。\n\n用对方法以后，连新 BTO 的流程、时间和细节，也一起前前后后顾好。\n\n买家塞给我一个红包的时候，我才知道，其实有问题的时候你在，不懂的时候你有耐心解释，才是最重要的。\n\n如果你也准备卖 HDB、换 BTO，但对 CPF、时间线或延长居住一头雾水，欢迎找我聊聊。\n\n房子卖掉只是结果，把整个过程安排好，才是重点。", "tags": "创业, 女性创业, 人间清醒, 认知觉醒, 女性独立, 相信自己, 女老板, 创业心得, chalette", "bait": false, "type": "Video", "likes": 359, "comments": 4, "er": 0.45, "followers": 79947, "date": "2026-11-07", "url": "https://www.instagram.com/p/Dfbpg9BNlYP/", "video": true, "ratio": 0, "score": 0.46, "status": "未处理", "x": 0.5}, {"id": "DfpPjBDuyBX", "tracker": "Real Estate 竞对", "competitor": "chaletteku", "caption": "留言【神图】，我把另外20个修图指令发你！🔥\n\n#chatgpt #修图 #p图 #photoedit #修图指令 #ai修图 #chalette #gpt", "transcript": "拍照的照片先不要刪掉这五个Touch Beauty的指令把你的肺片变成图踢这个指令照片一秒变清晰踢这个指令头发挡点也有了救踢这个指令把你的眼睛打开踢这个指令表情不自然也不怕踢这个指令不用再自己动手调色我整理出另外二十个指令留言 神服 我发给你", "brk": "Hook类型: 痛点直击\n结构: 痛点引入 → 给出5个具体指令 → 总结提效并引导留言\n为什么火: 顺应AI热潮，直接给干货指令解决P图难题，评论区互动率极高\n改编角度: 换成房产AI修图或美化文案指令，教粉丝一键搞定房屋高P照提升成交率", "my": "新家钥匙拿到了，旧 HDB 还没卖掉的屋主先不要慌。\n\n很多屋主以为，卖房就是把屋子放上网，然后等买家自己找上门。\n\n其实这一单，真的不是放上网就会卖掉这么简单。\n\n我们要帮屋主做的好多事情，其实是从买家开始看房那一刻才真正开始。\n\n第一步，把屋龄、装修和延长居住这些买家的顾虑，全部前前后后一个个看好。\n\n因为买家看房时会有各种担心，从屋龄到装修细节，其实都需要有人在中间耐心解释。\n\n第二步，把 CPF 的退款和时间线算得清清楚楚。\n\n因为卖旧家买新 BTO 的时候，时间线和 CPF 的计算其实容不得半点马虎。\n\n第三步，把新房子的流程和交钥匙细节一起顾好。\n\n因为不只是卖旧家，连新 BTO 的时间和细节，也要一起帮客户前前后后安排好。\n\n【剪辑:这里放案例画面】\n有一位七十多岁的女屋主，拿到新 HDB 钥匙时旧房还没卖掉，非常着急。\n我们帮她申请延期并成功卖出，最后她拿到红包还说谢谢我们一直帮她把关。\n\n以前自己卖房的时候，常常因为时间线和 CPF 的规定弄得一头雾水。\n\n用对了方法把整个过程安排好以后，不仅顺利完成交易，连卖房的各种担忧都有人帮忙把关。\n\n如果你也准备卖 HDB 换 BTO，但对 CPF、时间线或延长居住一头雾水，欢迎找我聊聊。\n\n房子卖掉只是结果，把整个过程安排好，才是重点。", "tags": "chatgpt, 修图, p图, photoedit, 修图指令, ai修图, chalette, gpt", "bait": true, "type": "Video", "likes": 134, "comments": 76, "er": 0.26, "followers": 79947, "date": "2026-11-12", "url": "https://www.instagram.com/p/DfpPjBDuyBX/", "video": true, "ratio": 0, "score": 0.45, "status": "未处理", "x": 0.5}, {"id": "Debi0PzETRa", "tracker": "Real Estate 竞对", "competitor": "chaletteku", "caption": "留言【Design】，我发你操作流程！😉\n\n#ai #codex #higgsfield #aiads #aicontent #aidesign #chalette", "transcript": "很多人用AI到今天才只會生產一盞土阿拉馬我跟妳講妳太浪費了現在Cordes配一個工具可以直接成為妳的品牌設計團隊妳要做的這種UGC 彈匹 推延模型廣告素材甚至一整套品牌內容都可以用它去操作這個工具就叫做Kits ViewKits View最近新推出來的新的市場主流而Cordes剛好最會去動畫去操作這些東西兩個配菜一起無論妳給它什麼素材它都能夠生素妳想要的東西操作很簡單冒險兩個步驟首先第一個步驟就進去你的Cordes然後妳就可以掛印掛印有夠的其實妳就可以選Kits View按了Kits View過妳就Install Connect然後就Connect了第二個步驟其實就是做素材直接講妳要什麼湯就可以做給妳比如這個全部妳都可以做出來過去妳還要請一整個團隊把妳去做還要等他們幾天現在妳Kits View加Cordes妳要改幾次都可以妳想要完整的流程像妳寫個D站我叫助理發給妳", "brk": "Hook类型: 痛点直击\n结构: 痛斥AI用法低效 → 揭秘顶级AI工具组合 → 实操展示步骤 → 引导私信留词\n为什么火: 戳中房产中介不会做广告素材的痛点，用“省下整个设计团队”的效率差制造强烈的获取欲望。\n改编角度: 针对买房/卖房痛点，教中介如何用AI一键生成爆款房源宣传视频与UGC广告素材。", "my": "新家钥匙已经拿到手了，／但旧的 HDB 还没卖掉怎么办。🥲\n\n很多人以为换房只要放上网等人来看，／或者自己随便拍几个照片就能卖出去。\n\n其实这一单，／真的不是放上网就会卖掉这么简单。\n\n买家会有各种各样的担忧，／屋龄、装修、延长居住、CPF、时间线，／几乎什么顾虑都有。\n\n如果你也准备卖 HDB、换 BTO，／但对这些流程一头雾水，／其实你可以用这三个方法来把关。\n\n第一步，／先做免费的房产咨询与财务规划。／因为你可以算清楚卖房后能拿回多少现金、CPF 退款，／以及接下来换房的预算是多少。／这样你心里才有底，／不会盲目地去市场上看房。\n\n第二步，／把卖旧家和买新家的过程连起来看。／很多人只顾着卖旧家，／却忘记新 BTO 的流程、时间和细节。／你要把新旧两边的流程前前后后顾好，／才不会出现拿到新家钥匙却还没卖掉旧房的尴尬情况。\n\n第三步，／遇到买家的各种顾虑时要有人帮忙把关。／不管是装修、屋龄还是延长居住的问题，／其实都需要有耐心去解释和处理。／有了这些准备，／你在换房的时候才不会手忙脚乱。\n\n【剪辑:这里放案例画面】\n\n我遇到过一个 70 多岁的女屋主，／她拿到新 HDB 钥匙时旧房还没卖掉，／被 6 个月内必须卖房的规定压得很着急。／我们帮她申请延期，／并一步步把关，／最后顺利把房子卖掉。\n\n以前大家换房都是自己摸索，／对 CPF 和时间线一头雾水，／整天担心规定没做好被罚款。／现在只要把整个过程安排好，／从咨询到时间线都有人帮你一起顾。\n\n房子卖掉只是结果，／把整个过程安排好才是重点。🏠\n\n如果你也准备换房，／欢迎找我聊聊。", "tags": "ai, codex, higgsfield, aiads, aicontent, aidesign, chalette", "bait": true, "type": "Video", "likes": 89, "comments": 73, "er": 0.2, "followers": 79947, "date": "2026-10-13", "url": "https://www.instagram.com/p/Debi0PzETRa/", "video": true, "ratio": 0, "score": 0.39, "status": "未处理", "x": 0.4}]</script>
+<script>
+const DATA = JSON.parse(document.getElementById('data').textContent);
+const SUPA = 'https://ybzsejuzwcjrdpcdvijz.supabase.co';
+const ANON = 'sb_publishable_zc9llPKiqwnvnbIDlYqPXQ_IkJJH9bj';
+const STATUSES = ["未处理", "拍摄中", "已处理", "跳过"];
+document.getElementById('updated').textContent = '更新于 2026-11-13 11:52 (GMT+8)';
+const PAGE = 48;
+let shown = PAGE;
+let videoOnly = false;
+let curTab = '全部';
+
+const $ = id => document.getElementById(id);
+const fmt = n => n >= 1e6 ? (n/1e6).toFixed(1)+'M' : n >= 1e3 ? (n/1e3).toFixed(1)+'K' : String(n);
+const getKey = () => ANON;  // anon key is baked in — safe, can only change status
+const I = n => '<svg class="ic"><use href="#i-' + n + '"/></svg>';
+const esc = s => String(s).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+const byRec = {}; DATA.forEach(d => byRec[d.id] = d);
+const TRENDS = [["chalette", 3], ["个人成长", 2], ["人间清醒", 2], ["认知觉醒", 2], ["女性成长", 2]];
+DATA.forEach(d => {
+  d.days = d.date ? Math.max(0, Math.floor((Date.now() - new Date(d.date + 'T00:00:00')) / 864e5)) : null;
+  d.horse = d.followers > 0 && d.followers < 50000 && ((d.x || 0) >= 2 || d.score >= 10);
+});
+const PRESETS = [
+  { k: 'px', icon: 'trend', label: '真爆款 ×2+', f: d => (d.x || 0) >= 2 },
+  { k: 'pn', icon: 'star', label: '近7天', f: d => d.days !== null && d.days <= 7 },
+  { k: 'ph', icon: 'zap', label: '黑马', f: d => d.horse },
+  { k: 'pb', icon: 'magnet', label: '引流帖', f: d => d.bait },
+];
+const presetOn = {};
+
+function toast(msg, ok) {
+  const t = $('toast'); t.textContent = msg; t.classList.add('show');
+  t.style.borderColor = ok ? 'var(--green)' : 'var(--red)';
+  clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+// filters
+const comps = [...new Set(DATA.map(d => d.competitor))].sort();
+comps.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = '@'+c; $('fComp').appendChild(o); });
+[...new Set(DATA.map(d => d.tracker))].forEach(t => { const o = document.createElement('option'); o.value = t; o.textContent = t; $('fTracker').appendChild(o); });
+
+function matchQ(d) {
+  const q = ($('fSearch').value || '').trim().toLowerCase();
+  return !q || (d.caption + ' ' + (d.tags || '') + ' ' + (d.transcript || '') + ' ' + (d.brk || '') + ' ' + d.competitor).toLowerCase().includes(q);
+}
+
+function basePool() {
+  const t = $('fTracker').value, c = $('fComp').value;
+  return DATA.filter(d => (!t || d.tracker === t) && (!c || d.competitor === c) && (!videoOnly || d.video)
+    && matchQ(d) && PRESETS.every(p => !presetOn[p.k] || p.f(d)));
+}
+
+function filtered() {
+  const s = $('fSort').value;
+  let arr = basePool().filter(d => curTab === '全部' || d.status === curTab);
+  const key = { score:'score', er:'er', comments:'comments', likes:'likes', x:'x' }[s];
+  if (s === 'date') arr.sort((a,b) => (b.date||'').localeCompare(a.date||''));
+  else arr.sort((a,b) => (b[key]||0) - (a[key]||0));
+  return arr;
+}
+
+let dragRec = null;
+
+function renderTabs() {
+  const pool = basePool();
+  const counts = { '全部': pool.length };
+  STATUSES.forEach(s => counts[s] = pool.filter(d => d.status === s).length);
+  $('tabs').innerHTML = '';
+  ['全部', ...STATUSES].forEach(name => {
+    const el = document.createElement('div');
+    el.className = 'tab' + (curTab === name ? ' on' : '') + (name !== '全部' ? ' droppable' : '');
+    el.innerHTML = esc(name) + ' <span class="cnt">' + counts[name] + '</span>';
+    el.onclick = () => { curTab = name; shown = PAGE; render(); };
+    if (name !== '全部') {
+      el.ondragover = e => { if (dragRec) { e.preventDefault(); el.classList.add('over'); } };
+      el.ondragleave = () => el.classList.remove('over');
+      el.ondrop = e => {
+        e.preventDefault(); el.classList.remove('over');
+        const d = byRec[dragRec]; dragRec = null;
+        if (d && d.status !== name) setStatus(d, name);
+      };
+    }
+    $('tabs').appendChild(el);
+  });
+}
+
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const el = e.target, pid = el.dataset.pid;
+      if (!el.querySelector('iframe')) {
+        const f = document.createElement('iframe');
+        f.src = 'https://www.instagram.com/p/' + pid + '/embed/';
+        f.loading = 'lazy'; f.allow = 'autoplay; encrypted-media';
+        el.appendChild(f);
+      }
+      io.unobserve(el);
+    }
+  });
+}, { rootMargin: '400px' });
+
+async function setStatus(d, val) {
+  try {
+    const r = await fetch(SUPA + '/rest/v1/posts?post_id=eq.' + encodeURIComponent(d.id), {
+      method: 'PATCH',
+      headers: { 'apikey': ANON, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+      body: JSON.stringify({ status: val })
+    });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    d.status = val;
+    cacheStatus(d.id, val);
+    toast('✓ @' + d.competitor + ' 已移到「' + val + '」', true);
+  } catch (e) {
+    toast('更新失败: ' + e.message + (String(e.message).includes('401') || String(e.message).includes('403') ? ' — 密钥无效?' : ''), false);
+  }
+  render();
+}
+
+function card(d, idx) {
+  const el = document.createElement('div');
+  el.className = 'card' + ((d.x || 0) >= 2 ? ' outlier' : '');
+  el.style.animationDelay = Math.min(idx % PAGE, 14) * 30 + 'ms';
+  el.draggable = true;
+  el.ondragstart = e => {
+    dragRec = d.id;
+    e.dataTransfer.effectAllowed = 'move';
+    el.classList.add('lifting');
+    document.body.classList.add('dragging');
+  };
+  el.ondragend = () => {
+    el.classList.remove('lifting');
+    document.body.classList.remove('dragging');
+    dragRec = null;
+  };
+  const typeIcon = d.video ? 'video' : (d.type === 'Carousel' ? 'layers' : 'image');
+  const days = d.days, horse = d.horse;
+  const ago = days === null ? '' : (days === 0 ? '今天' : days + '天前');
+  const lines = (d.caption || '').split('\n').map(l => l.trim()).filter(Boolean);
+  const hook = lines[0] || '';
+  const tr = (d.transcript && d.transcript !== '(转录失败)' && d.transcript !== '(无口播内容)') ? d.transcript : '';
+  el.innerHTML = `
+    <div class="embed" data-pid="${d.id}"><div class="ph"><svg class="ic"><use href="#i-${typeIcon}"/></svg></div></div>
+    <div class="meta">
+      <div class="row1">
+        <span class="handle" title="拖到上方 tab 即可归类">${I('grip')}</span>
+        <a class="who" href="https://www.instagram.com/${d.competitor}/" target="_blank">@${d.competitor}</a>
+        <span class="badge">${d.type || '-'}</span>
+        ${days !== null && days <= 7 ? '<span class="badge bnew">' + I('star') + '新帖</span>' : ''}
+        ${horse ? '<span class="badge bhorse">' + I('zap') + '黑马</span>' : ''}
+        ${d.bait ? '<span class="badge bbait" title="「留言XX」引流打法 — 评论被引流放大,漏斗设计值得学">' + I('magnet') + '引流</span>' : ''}
+        <span class="date" title="${d.date || ''}">${ago}</span>
+      </div>
+      <div class="nums">
+        <span class="num hot" title="Viral Score">${I('flame')}<b>${d.score}</b></span>
+        ${(d.x || 0) >= 2 ? '<span class="num x" title="是自家平均热度的多少倍">' + I('trend') + '<b>×' + d.x + '</b></span>' : ''}
+        <span class="num er" title="Engagement Rate">${I('pct')}<b>${d.er}%</b></span>
+        <span class="num" title="Likes">${I('heart')}<b>${d.likes > 0 ? fmt(d.likes) : '隐藏'}</b></span>
+        <span class="num" title="Comments">${I('msg')}<b>${fmt(d.comments)}</b></span>
+        <span class="num" title="Followers">${I('users')}<b>${fmt(d.followers)}</b></span>
+      </div>
+      <div class="cap" onclick="this.classList.toggle('open')"></div>
+      ${d.brk ? '<div class="ai" onclick="this.classList.toggle(&quot;open&quot;)"></div>' : ''}
+      ${d.my ? '<div class="mine" onclick="this.classList.toggle(&quot;open&quot;)"></div>' : ''}
+      <div class="srow"><label>状态</label><select class="status btn s${d.status}"></select>
+        <button class="abtn copy" title="复制完整文案">${I('copy')}文案</button>
+        ${tr ? '<button class="abtn mic" title="复制视频口播逐字稿">' + I('mic') + '口播</button>' : ''}
+        ${d.my ? '<button class="abtn minec" title="复制我的改写口播稿(可直接拍)">' + I('mic') + '我的稿</button>' : ''}
+        <button class="abtn brief" title="复制拍摄 Brief(数据+Hook+AI拆解+我的稿+口播稿+文案)">${I('clip')}Brief</button>
+        <a class="abtn" href="${d.url}" target="_blank" title="打开 Instagram 原帖">${I('ext')}</a></div>
+    </div>`;
+  const capEl = el.querySelector('.cap');
+  const restTxt = lines.slice(1).join('\n');
+  capEl.innerHTML = hook ? '<b>' + esc(hook) + '</b>' + (restTxt ? '<br>' + esc(restTxt).replace(/\n/g, '<br>') : '') : '';
+  const aiEl = el.querySelector('.ai');
+  if (aiEl) aiEl.innerHTML = '<b>💡 AI 拆解</b><br>' + esc(d.brk).split(String.fromCharCode(10)).join('<br>');
+  const myEl = el.querySelector('.mine');
+  if (myEl) myEl.innerHTML = '<b>🎬 我的版本(可直接拍)</b><br>' + esc(d.my).split(String.fromCharCode(10)).join('<br>');
+  const sel = el.querySelector('.status');
+  STATUSES.forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; sel.appendChild(o); });
+  sel.value = d.status;
+  sel.onchange = () => setStatus(d, sel.value);
+  el.querySelector('.copy').onclick = () =>
+    navigator.clipboard.writeText(d.caption || '').then(() => toast('✓ 文案已复制', true));
+  const micBtn = el.querySelector('.mic');
+  if (micBtn) micBtn.onclick = () =>
+    navigator.clipboard.writeText(tr).then(() => toast('✓ 口播稿已复制', true));
+  const mineBtn = el.querySelector('.minec');
+  if (mineBtn) mineBtn.onclick = () =>
+    navigator.clipboard.writeText(d.my).then(() => toast('✓ 我的改写稿已复制', true));
+  el.querySelector('.brief').onclick = () => {
+    const NL = String.fromCharCode(10);
+    const parts = ['🎬 爆款参考 @' + d.competitor + ((d.x || 0) >= 2 ? '(自家平均 ×' + d.x + ')' : ''),
+      '📊 🔥' + d.score + ' | ER ' + d.er + '% | ❤️ ' + (d.likes > 0 ? fmt(d.likes) : '隐藏') +
+      ' | 💬 ' + fmt(d.comments) + ' | 👥 ' + fmt(d.followers) + (ago ? ' | ' + ago : ''),
+      '🔗 ' + d.url, '✍️ Hook: ' + hook];
+    if (d.brk) parts.push('——— AI 拆解 ———', d.brk);
+    if (d.my) parts.push('——— 我的版本(可直接拍)———', d.my);
+    if (tr) parts.push('——— 竞对原口播稿 ———', tr);
+    parts.push('——— 完整文案 ———', d.caption || '');
+    navigator.clipboard.writeText(parts.join(NL)).then(() => toast('✓ Brief 已复制,可直接发给拍摄/剪辑', true));
+  };
+  io.observe(el.querySelector('.embed'));
+  return el;
+}
+
+function render() {
+  renderTabs();
+  const arr = filtered();
+  const grid = $('grid'); grid.innerHTML = '';
+  arr.slice(0, shown).forEach((d, i) => grid.appendChild(card(d, i)));
+  $('empty').style.display = arr.length ? 'none' : '';
+  $('moreWrap').style.display = arr.length > shown ? '' : 'none';
+}
+
+
+function applyStatusCache() {
+  try {
+    const c = JSON.parse(localStorage.getItem('st_cache') || '{}');
+    Object.keys(c).forEach(rid => { const d = byRec[rid]; if (d) d.status = c[rid]; });
+  } catch (e) {}
+}
+
+function cacheStatus(rid, val) {
+  try {
+    const c = JSON.parse(localStorage.getItem('st_cache') || '{}');
+    c[rid] = val; localStorage.setItem('st_cache', JSON.stringify(c));
+  } catch (e) {}
+}
+
+// live status refresh (so weekly-baked page shows current statuses)
+async function refreshStatuses() {
+  applyStatusCache(); render();  // last-known statuses first
+  if (Date.now() - (+localStorage.getItem('st_ts') || 0) < 600000) return;  // 10-min throttle
+  localStorage.setItem('st_ts', String(Date.now()));
+  const fresh = {};
+  try {
+    const r = await fetch(SUPA + '/rest/v1/posts?select=post_id,status', { headers: { 'apikey': ANON } });
+    if (!r.ok) return;
+    (await r.json()).forEach(row => {
+      const d = byRec[row.post_id];
+      if (d) d.status = row.status || '未处理';
+      if (row.status && row.status !== '未处理') fresh[row.post_id] = row.status;
+    });
+    localStorage.setItem('st_cache', JSON.stringify(fresh));
+    render();
+  } catch (e) {}
+}
+
+['fTracker','fComp','fSort'].forEach(id => $(id).onchange = () => { shown = PAGE; render(); });
+$('fSearch').oninput = () => { shown = PAGE; render(); };
+$('fVideo').onclick = () => { videoOnly = !videoOnly; $('fVideo').classList.toggle('on', videoOnly); shown = PAGE; render(); };
+$('moreBtn').onclick = () => { shown += PAGE; render(); };
+
+// preset quick filters
+$('presets').innerHTML = '<span class="lbl">快筛</span>';
+PRESETS.forEach(p => {
+  const c = document.createElement('span'); c.className = 'chip2';
+  c.innerHTML = I(p.icon) + esc(p.label);
+  c.onclick = () => { presetOn[p.k] = !presetOn[p.k]; c.classList.toggle('on', presetOn[p.k]); shown = PAGE; render(); };
+  $('presets').appendChild(c);
+});
+
+// trending hashtags among outlier posts
+if (TRENDS.length) {
+  $('trends').innerHTML = '<span class="lbl">爆款热词</span>';
+  TRENDS.forEach(([tag, n]) => {
+    const c = document.createElement('span'); c.className = 'chip2';
+    c.textContent = '#' + tag + ' ' + n;
+    c.onclick = () => { $('fSearch').value = $('fSearch').value === tag ? '' : tag; shown = PAGE; render(); };
+    $('trends').appendChild(c);
+  });
+} else { $('trends').style.display = 'none'; }
+
+render();
+refreshStatuses();
+</script>
+</body>
+</html>
